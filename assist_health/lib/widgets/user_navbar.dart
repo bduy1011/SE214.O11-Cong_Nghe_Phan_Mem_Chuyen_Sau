@@ -1,3 +1,4 @@
+import 'package:assist_health/user_screens/community_screen.dart';
 import 'package:assist_health/user_screens/home_screen.dart';
 import 'package:assist_health/user_screens/message_screen.dart';
 import 'package:assist_health/user_screens/schedule_screen.dart';
@@ -19,9 +20,11 @@ class _UserNavBarState extends State<UserNavBar> {
     const HomeScreen(),
     // Messages Screen
     const MessageScreen(),
+    // Public Chat Screen
+    CommunityScreen(),
     // Schedule Screen
     const ScheduleScreen(),
-    // Settings Screen
+    //Settings Screen
     const SettingScreen(),
   ];
 
@@ -50,19 +53,23 @@ class _UserNavBarState extends State<UserNavBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
-              label: "Home",
+              label: "Trang chủ",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_text_fill),
-              label: "Messages",
+              label: "Nhắn tin",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_3),
+              label: "Cộng đồng",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
-              label: "Schedule",
+              label: "Lịch khám",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: "Settings",
+              label: "Cài đặt",
             ),
           ],
         ),
