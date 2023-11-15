@@ -3,6 +3,7 @@ import 'package:assist_health/user_screens/home_screen.dart';
 import 'package:assist_health/user_screens/message_screen.dart';
 import 'package:assist_health/user_screens/schedule_screen.dart';
 import 'package:assist_health/user_screens/settings_screen.dart';
+import 'package:assist_health/user_screens/health_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,12 +21,14 @@ class _UserNavBarState extends State<UserNavBar> {
     const HomeScreen(),
     // Messages Screen
     const MessageScreen(),
-    // Public Chat Screen
-    CommunityScreen(),
     // Schedule Screen
     const ScheduleScreen(),
-    //Settings Screen
-    const SettingScreen(),
+    // Community Screen
+     CommunityScreen(),
+     //Profile
+    HealthProfileScreen(),
+     //Setting Screen
+     const SettingScreen(),
   ];
 
   @override
@@ -53,23 +56,27 @@ class _UserNavBarState extends State<UserNavBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
-              label: "Trang chủ",
+              label: "Home",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_text_fill),
-              label: "Nhắn tin",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_3),
-              label: "Cộng đồng",
+              label: "Messages",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
-              label: "Lịch khám",
+              label: "Schedule",
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.question_answer),
+              label: "Community",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.health_and_safety),
+              label: "Profile",
+              ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: "Cài đặt",
+              label: "Settings",
             ),
           ],
         ),
