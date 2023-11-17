@@ -1,18 +1,19 @@
+import 'package:assist_health/ui/doctor_ui/set_schedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AdminNavBar extends StatefulWidget {
-  const AdminNavBar({super.key});
+class DoctorNavBar extends StatefulWidget {
+  const DoctorNavBar({super.key});
 
   @override
-  State<StatefulWidget> createState() => _AdminNavBarState();
+  State<DoctorNavBar> createState() => _DoctorNavBarState();
 }
 
-class _AdminNavBarState extends State<AdminNavBar> {
+class _DoctorNavBarState extends State<DoctorNavBar> {
   int _selectedIndex = 0;
   final _screens = [
     // Screen 1
-    Container(),
+    const SetScheduleScreen(),
     // Screen 2
     Container(),
     // Screen 3

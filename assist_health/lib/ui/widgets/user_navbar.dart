@@ -1,9 +1,9 @@
-import 'package:assist_health/user_screens/community_screen.dart';
-import 'package:assist_health/user_screens/home_screen.dart';
-import 'package:assist_health/user_screens/message_screen.dart';
-import 'package:assist_health/user_screens/schedule_screen.dart';
-import 'package:assist_health/user_screens/settings_screen.dart';
-import 'package:assist_health/user_screens/health_profile.dart';
+import 'package:assist_health/ui/user_ui/community.dart';
+import 'package:assist_health/ui/user_ui/home.dart';
+import 'package:assist_health/ui/user_ui/message.dart';
+import 'package:assist_health/ui/user_ui/schedule.dart';
+import 'package:assist_health/ui/user_ui/settings.dart';
+import 'package:assist_health/ui/user_ui/health_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class UserNavBar extends StatefulWidget {
   const UserNavBar({super.key});
 
   @override
-  State<StatefulWidget> createState() => _UserNavBarState();
+  State<UserNavBar> createState() => _UserNavBarState();
 }
 
 class _UserNavBarState extends State<UserNavBar> {
@@ -21,14 +21,14 @@ class _UserNavBarState extends State<UserNavBar> {
     const HomeScreen(),
     // Messages Screen
     const MessageScreen(),
+    // Public Chat Screen
+    const CommunityScreen(),
     // Schedule Screen
     const ScheduleScreen(),
-    // Community Screen
-     CommunityScreen(),
-     //Profile
-    HealthProfileScreen(),
-     //Setting Screen
-     const SettingScreen(),
+    //Profile
+    const HealthProfileScreen(),
+    //Setting Screen
+    const SettingScreen(),
   ];
 
   @override
@@ -56,27 +56,27 @@ class _UserNavBarState extends State<UserNavBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
-              label: "Home",
+              label: "Trang chủ",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_text_fill),
-              label: "Messages",
+              label: "Nhắn tin",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_3),
+              label: "Cộng đồng",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
-              label: "Schedule",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.question_answer),
-              label: "Community",
+              label: "Lịch khám",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.health_and_safety),
-              label: "Profile",
-              ),
+              label: "Hồ sơ",
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: "Settings",
+              label: "Cài đặt",
             ),
           ],
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:assist_health/widgets/upcoming_schedule.dart';
+import 'package:assist_health/ui/widgets/upcoming_schedule.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -12,7 +12,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   int _buttonIndex = 0;
 
   final _scheduleWidgets = [
-    // Chua done
+    // Chưa xong
     const UpcomingSchedule(),
     Container(),
     Container(),
@@ -29,7 +29,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text(
-                "Schedule",
+                "Lịch khám",
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
@@ -55,7 +55,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 25),
+                          vertical: 12, horizontal: 20),
                       decoration: BoxDecoration(
                         color: _buttonIndex == 0
                             ? const Color(0xFF7165D6)
@@ -63,7 +63,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        "Upcoming",
+                        "Lịch sắp tới",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -81,7 +81,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 25),
+                          vertical: 12, horizontal: 20),
                       decoration: BoxDecoration(
                         color: _buttonIndex == 1
                             ? const Color(0xFF7165D6)
@@ -107,7 +107,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 25),
+                          vertical: 12, horizontal: 20),
                       decoration: BoxDecoration(
                         color: _buttonIndex == 2
                             ? const Color(0xFF7165D6)

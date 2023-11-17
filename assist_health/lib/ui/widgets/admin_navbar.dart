@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DoctorNavBar extends StatefulWidget {
-  const DoctorNavBar({super.key});
+class AdminNavBar extends StatefulWidget {
+  const AdminNavBar({super.key});
 
   @override
-  State<StatefulWidget> createState() => _DoctorNavBarState();
+  State<AdminNavBar> createState() => _AdminNavBarState();
 }
 
-class _DoctorNavBarState extends State<DoctorNavBar> {
+class _AdminNavBarState extends State<AdminNavBar> {
   int _selectedIndex = 0;
   final _screens = [
     // Screen 1

@@ -31,6 +31,7 @@ dependencies:
   
   flutter:
     sdk: flutter
+
   http: ^0.13.3
   flutter_bloc: ^7.0.0
   firebase_core: ^2.17.0
@@ -39,17 +40,19 @@ dependencies:
   cloud_firestore: ^4.11.0
   country_picker: ^2.0.21
   image_picker: ^1.0.4
-  file_picker: 6.1.1
   pinput: ^3.0.1
   uuid: ^4.0.0
+  timeline_tile: ^2.0.0
+  file_picker: ^6.1.1
   path_provider: ^2.0.5
-  open_file: 3.3.2
-  photo_view: 0.14.0
-  shared_preferences: ^2.0.12
+  open_file: ^3.3.2
+  date_picker_timeline: ^1.2.5
+  intl: ^0.18.1
+  flutter_staggered_animations: ^1.1.1
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  custom_clippers: ^2.0.0
 
 dev_dependencies:
   flutter_test:
