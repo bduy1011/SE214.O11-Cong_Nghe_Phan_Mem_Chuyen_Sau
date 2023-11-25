@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:assist_health/others/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -39,10 +41,20 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
 
   File? selectedImage;
   List<File> selectedFiles = [];
+
+  late User? _currentUser;
+  late String _userHealthProfileCollection;
+  late DocumentReference _userDocumentRef;
+
   @override
   void initState() {
     super.initState();
+    _currentUser = FirebaseAuth.instance.currentUser;
 
+    _userHealthProfileCollection =
+        'health_profiles/${_currentUser?.uid ?? 'unknown_user'}';
+    _userDocumentRef =
+        FirebaseFirestore.instance.doc(_userHealthProfileCollection);
     // Gọi phương thức để tải dữ liệu từ Firebase khi trang được khởi tạo
     loadDataFromFirestore();
   }
@@ -59,8 +71,11 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Themes.backgroundClr,
         appBar: AppBar(
-          title: Text('Health Profile'),
+          title: const Text('Hồ sơ sức khỏe cá nhân'),
+          centerTitle: true,
+          backgroundColor: Themes.hearderClr,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -68,14 +83,14 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Upload Photo',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
                     pickImage();
@@ -86,60 +101,170 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                     color: Colors.grey,
                     child: selectedImage != null
                         ? Image.file(selectedImage!, fit: BoxFit.cover)
-                        : Icon(Icons.camera_alt, color: Colors.white),
+                        : const Icon(Icons.camera_alt, color: Themes.iconClr),
                   ),
                 ),
 
-                SizedBox(height: 16),
-
-                Text(
-                  'Weight (kg)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                const SizedBox(height: 16),
+                Column(
+                  children: [
+                    const Text(
+                      'Chỉ số gần đây',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Colors.purple,
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 8),
+                                child: Transform.rotate(
+                                  angle: 90 *
+                                      3.1415926535 /
+                                      180, // Chuyển đổi góc từ độ sang radian
+                                  child: const Icon(
+                                    Icons.straighten,
+                                    color: Colors.white,
+                                    size: 25,
+                                  ),
+                                )),
+                            const SizedBox(width: 10),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '170 cm',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  'Chiều cao',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Colors.purple,
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 8),
+                                child: const Icon(
+                                  Icons.scale,
+                                  color: Colors.white,
+                                  size: 25,
+                                )),
+                            const SizedBox(width: 10),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '80 kg',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  'Cân nặng',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: Colors.purple,
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 2, vertical: 8),
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      'Weight (kg)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: weightController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter weight',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Height (cm)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: heightController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter height',
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: weightController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter weight',
-                  ),
-                ),
 
-                SizedBox(height: 8),
-
-                Text(
-                  'Height (cm)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: heightController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter height',
-                  ),
-                ),
-
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Themes.buttonClr,
+                  ),
                   onPressed: () {
                     calculateBMI();
                   },
-                  child: Text('Calculate BMI'),
+                  child: const Text('Calculate BMI'),
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 Text(
                   'BMI: ${bmi.toStringAsFixed(1)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -147,65 +272,68 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
 
                 Text(
                   'BMI Status: $bmiStatus',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-                Text(
+                const Text(
                   'Blood Pressure',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 // Add blood pressure input fields (using TextFields)
                 TextField(
                   controller: bloodPressureController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter blood pressure',
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-                Text(
+                const Text(
                   'Temperature',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 // Add temperature input field (using TextField)
                 TextField(
                   controller: temperatureController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter temperature',
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-                Text(
+                const Text(
                   'Vaccination History',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Themes.buttonClr,
+                  ),
                   onPressed: () {
                     addVaccination();
                   },
-                  child: Text('Add Vaccination'),
+                  child: const Text('Add Vaccination'),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: vaccinations.length,
@@ -214,7 +342,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                       title: Text(vaccinations[index].name),
                       subtitle: Text(vaccinations[index].date),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
                             vaccinations.removeAt(index);
@@ -225,23 +353,26 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                   },
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-                Text(
+                const Text(
                   'Lab Test Results',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Themes.buttonClr,
+                  ),
                   onPressed: () {
                     pickFiles();
                   },
-                  child: Text('Pick Files'),
+                  child: const Text('Pick Files'),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: selectedFiles.length,
@@ -254,7 +385,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                         child: Text(selectedFiles[index].path),
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
                             selectedFiles.removeAt(index);
@@ -265,10 +396,13 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                   },
                 ),
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Themes.buttonClr,
+                    ),
                     onPressed: () {
                       saveDataToFirestore();
                     },
-                    child: Text('Save'))
+                    child: const Text('Save'))
               ],
             ),
           ),
@@ -326,16 +460,9 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
 
   void loadDataFromFirestore() async {
     try {
-      final firestore = FirebaseFirestore.instance;
+      DocumentSnapshot document = await _userDocumentRef.get();
 
-      // Truy vấn document mới nhất trong collection "health_profiles"
-      QuerySnapshot snapshot =
-          await firestore.collection('health_profiles').get();
-      // Kiểm tra xem có document nào hay không
-      if (snapshot.docs.isNotEmpty) {
-        // Lấy document đầu tiên
-        DocumentSnapshot document = snapshot.docs.first;
-
+      if (document.exists) {
         // Cập nhật các giá trị từ Firestore vào các text controllers và biến thành viên
         setState(() {
           weightController.text = document['weight'].toString();
@@ -414,14 +541,14 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('An error occurred while loading data.'),
+            title: const Text('Error'),
+            content: const Text('An error occurred while loading data.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -450,8 +577,6 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
 
   void saveDataToFirestore() async {
     try {
-      final firestore = FirebaseFirestore.instance;
-
       // Lưu trữ thông tin từ các text controllers vào các biến
       double weight = double.tryParse(weightController.text) ?? 0.0;
       double height = double.tryParse(heightController.text) ?? 0.0;
@@ -459,8 +584,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
       String temperature = temperatureController.text;
 
       // Tạo một document mới trong collection "health_profiles"
-      DocumentReference documentRef =
-          await firestore.collection('health_profiles').add({
+      await _userDocumentRef.set({
         'weight': weight,
         'height': height,
         'bloodPressure': bloodPressure,
@@ -471,7 +595,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                   'date': vaccination.date,
                 })
             .toList(),
-      });
+      }, SetOptions(merge: true));
       // Lưu trữ vaccinations vào subcollection "vaccinations" của document mới được tạo
 
       // Lưu trữ hình ảnh vào Firebase Storage và lấy URL của hình ảnh đã lưu
@@ -485,7 +609,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
         String imageURL = await storageTaskSnapshot.ref.getDownloadURL();
 
         // Cập nhật URL của hình ảnh đã lưu vào Firestore
-        await documentRef.update({'imageURL': imageURL});
+        await _userDocumentRef.update({'imageURL': imageURL});
       }
 
       // Lưu trữ các tệp vào Firebase Storage và lấy URL của các tệp đã lưu
@@ -501,21 +625,21 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
       }
 
       // Cập nhật URL của các tệp đã lưu vào Firestore
-      await documentRef.update({'fileURLs': fileURLs});
+      await _userDocumentRef.update({'fileURLs': fileURLs});
 
       // Hiển thị thông báo thành công
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Success'),
-            content: Text('Data saved successfully.'),
+            title: const Text('Success'),
+            content: const Text('Data saved successfully.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -527,14 +651,14 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('An error occurred. Please try again later.'),
+            title: const Text('Error'),
+            content: const Text('An error occurred. Please try again later.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -553,15 +677,15 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add Vaccination'),
+        title: const Text('Add Vaccination'),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           TextField(
             controller: nameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Vaccine Name',
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           GestureDetector(
             onTap: () async {
               selectedDate = await showDatePicker(
@@ -579,7 +703,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
             },
             child: AbsorbPointer(
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Date',
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
@@ -593,7 +717,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
@@ -609,7 +733,7 @@ class _HealthProfileScreenState extends State<HealthProfileScreen> {
                 });
               }
             },
-            child: Text('Add'),
+            child: const Text('Add'),
           ),
         ],
       ),

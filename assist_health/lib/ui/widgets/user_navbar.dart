@@ -1,9 +1,11 @@
-import 'package:assist_health/ui/user_ui/community.dart';
-import 'package:assist_health/ui/user_ui/home.dart';
-import 'package:assist_health/ui/user_ui/message.dart';
-import 'package:assist_health/ui/user_ui/schedule.dart';
-import 'package:assist_health/ui/user_ui/settings.dart';
-import 'package:assist_health/ui/user_ui/health_profile.dart';
+import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/user_screens/community.dart';
+import 'package:assist_health/ui/user_screens/home.dart';
+import 'package:assist_health/ui/user_screens/message.dart';
+import 'package:assist_health/ui/user_screens/public_questions.dart';
+import 'package:assist_health/ui/user_screens/schedule.dart';
+import 'package:assist_health/ui/user_screens/settings.dart';
+import 'package:assist_health/ui/user_screens/health_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +24,7 @@ class _UserNavBarState extends State<UserNavBar> {
     // Messages Screen
     const MessageScreen(),
     // Public Chat Screen
-    const CommunityScreen(),
+    const PublicQuestionsScreen(),
     // Schedule Screen
     const ScheduleScreen(),
     //Profile
@@ -41,7 +43,7 @@ class _UserNavBarState extends State<UserNavBar> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF7165D6),
+          selectedItemColor: Themes.selectedClr,
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
