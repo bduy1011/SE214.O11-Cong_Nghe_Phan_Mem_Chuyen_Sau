@@ -1,7 +1,8 @@
-import 'package:assist_health/functions/methods.dart';
+import 'package:assist_health/others/methods.dart';
 import 'package:assist_health/models/doctor/doctor_info.dart';
-import 'package:assist_health/ui/user_ui/detail_doctor.dart';
-import 'package:assist_health/ui/user_ui/list_doctor.dart';
+import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/user_screens/detail_doctor.dart';
+import 'package:assist_health/ui/user_screens/list_doctor.dart';
 import 'package:assist_health/ui/widgets/doctor_popular_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -37,6 +38,7 @@ class _MyHomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Themes.backgroundClr,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 40),
@@ -48,47 +50,74 @@ class _MyHomeScreen extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Huỳnh Tiến Phát",
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage("assets/doctor1.jpg"),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Huỳnh Tiến Phát",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage("assets/doctor1.jpg"),
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      iconSize: 30,
+                      onPressed: null,
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      height: 300,
-                      child: ListView(
+                    child: Container(
+                      height: 240,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
+                      child: Column(
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 10,
                             ),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
+                            decoration: BoxDecoration(
+                              color: Themes.backgroundClr,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                ),
+                              ],
                             ),
                             child: GridView.count(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
+                              physics: const NeverScrollableScrollPhysics(),
                               crossAxisCount: 3,
-                              crossAxisSpacing: 40,
+                              crossAxisSpacing: 20,
                               mainAxisSpacing: 0,
                               children: [
                                 itemDashboard(
                                     'Tư vấn online',
                                     CupertinoIcons.play_rectangle,
-                                    Colors.deepOrange, () {
+                                    const Color(0xFFFABD24),
+                                    const Color(0xFFFA7516), () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -99,27 +128,32 @@ class _MyHomeScreen extends State<HomeScreen> {
                                 itemDashboard(
                                     'Hỏi riêng bác sĩ',
                                     CupertinoIcons.graph_circle,
-                                    Colors.green,
+                                    const Color(0xFF38B9F8),
+                                    const Color(0xFF6169F0),
                                     () {}),
                                 itemDashboard(
                                     'Hồ sơ sức khỏe',
                                     CupertinoIcons.person_2,
-                                    Colors.purple,
+                                    const Color(0xFFEB68AE),
+                                    const Color(0xFFF0005E),
                                     () {}),
                                 itemDashboard(
                                     'Cộng đồng',
                                     CupertinoIcons.chat_bubble_2,
-                                    Colors.brown,
+                                    const Color(0xFF22D1EC),
+                                    const Color(0xFF0EA6E9),
                                     () {}),
                                 itemDashboard(
                                     'Lịch khám',
                                     CupertinoIcons.calendar,
-                                    Colors.indigo,
+                                    const Color(0xFFD545EF),
+                                    const Color(0xFF803BEE),
                                     () {}),
                                 itemDashboard(
                                     'Gói dịch vụ',
                                     CupertinoIcons.add_circled,
-                                    Colors.teal,
+                                    const Color(0xFF2ED0A0),
+                                    const Color(0xFF08B7DF),
                                     () {}),
                               ],
                             ),
@@ -133,9 +167,9 @@ class _MyHomeScreen extends State<HomeScreen> {
               const Padding(
                 padding: EdgeInsets.only(left: 15),
                 child: Text(
-                  "What are your symptoms?",
+                  "Khám theo chuyên khoa",
                   style: TextStyle(
-                    fontSize: 23,
+                    fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
@@ -153,7 +187,7 @@ class _MyHomeScreen extends State<HomeScreen> {
                           horizontal: 15, vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF4F6FA),
+                        color: Themes.highlightClr,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: const [
                           BoxShadow(
@@ -181,17 +215,17 @@ class _MyHomeScreen extends State<HomeScreen> {
               const Padding(
                 padding: EdgeInsets.only(left: 15),
                 child: Text(
-                  "LỰA CHỌN PHỔ BIẾN",
+                  "Lựa chọn phổ biến",
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black54,
                   ),
                 ),
               ),
               FutureBuilder<List<DoctorInfo>>(
                 future: getInfoDoctors(),
-                builder: (context, snapshot) {
+                builder: (_, snapshot) {
                   if (snapshot.hasError) {
                     return const SizedBox(
                         height: 290,
@@ -270,7 +304,7 @@ class _MyHomeScreen extends State<HomeScreen> {
     );
   }
 
-  itemDashboard(String title, IconData iconData, Color background,
+  itemDashboard(String title, IconData iconData, Color topClr, Color bottomClr,
           Function() onTap) =>
       InkWell(
         onTap: onTap,
@@ -285,16 +319,31 @@ class _MyHomeScreen extends State<HomeScreen> {
               Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                    color: background,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        topClr,
+                        bottomClr,
+                      ],
+                    ),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(iconData, color: Colors.white)),
+                  child: Icon(
+                    iconData,
+                    color: Colors.white,
+                    size: 30,
+                  )),
               const SizedBox(height: 8),
               Text(
                 title,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
               ),
             ],
           ),

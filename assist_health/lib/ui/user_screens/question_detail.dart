@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:assist_health/others/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assist_health/models/other/question.dart';
@@ -40,8 +41,11 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        title: const Text('Question Detail'),
+        title: const Text('Câu hỏi'),
+        centerTitle: true,
+        backgroundColor: Themes.hearderClr,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,17 +60,22 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                     'Chủ đề: ${widget.question.title}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 20,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text('Nội dung: ${widget.question.content}'),
                   const SizedBox(height: 8),
                   Text(
                     'Tuổi: ${widget.question.age} - Giới tính: ${widget.question.gender}',
                     style: const TextStyle(
+                      fontSize: 16,
                       fontStyle: FontStyle.italic,
                     ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Nội dung: ${widget.question.content}',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w400, height: 1.5),
                   ),
                 ],
               ),
@@ -135,8 +144,7 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                   setState(() {
                     answers.add(answer);
                   });
-                  _saveAnswerToFirebase(
-                      answer); // Lưu câu trả lời vào Firestore
+                  _saveAnswerToFirebase(answer);
                 }
                 Navigator.pop(context);
               },

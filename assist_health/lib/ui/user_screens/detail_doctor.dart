@@ -1,8 +1,9 @@
-import 'package:assist_health/functions/Methods.dart';
+import 'package:assist_health/others/Methods.dart';
 import 'package:assist_health/models/doctor/doctor_experience.dart';
 import 'package:assist_health/models/doctor/doctor_info.dart';
 import 'package:assist_health/models/doctor/doctor_study.dart';
-import 'package:assist_health/ui/user_ui/message.dart';
+import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/user_screens/message.dart';
 import 'package:assist_health/ui/widgets/register_call_navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Themes.backgroundClr,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -60,8 +61,8 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                         Text(
                           widget.doctorInfo.expert,
                           style: const TextStyle(
+                            fontSize: 17,
                             color: Colors.black54,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -76,9 +77,9 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF7165D6),
+                              color: Themes.buttonClr,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Center(
@@ -86,7 +87,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                 "Dịch vụ",
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -118,7 +119,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                     margin: const EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(width: 1, color: Colors.black54),
+                      border: Border.all(width: 0.5, color: Colors.black38),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -139,7 +140,14 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                               const SizedBox(
                                 height: 4,
                               ),
-                              const Text("Đánh giá"),
+                              const Text(
+                                "Đánh giá",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black54,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -174,7 +182,14 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                               const SizedBox(
                                 height: 4,
                               ),
-                              const Text("Tư vấn trung bình"),
+                              const Text(
+                                "Tư vấn trung bình",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black54,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -190,8 +205,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                               child: isFavorite
                                   ? const Icon(Icons.favorite,
                                       color: Colors.red, size: 35)
-                                  : const Icon(Icons.favorite_border_outlined,
-                                      color: Colors.black54, size: 35),
+                                  : const Icon(
+                                      Icons.favorite_border_outlined,
+                                      color: Colors.redAccent,
+                                      size: 35,
+                                    ),
                             ),
                           ),
                         ),
@@ -203,24 +221,19 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF9F9FFF),
+                      color: Themes.primaryColor.withOpacity(0.7),
                       borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(width: 1, color: const Color(0xFF7165D6)),
+                      border: Border.all(width: 1, color: Themes.primaryColor),
                     ),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.doctorInfo.desc,
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ]),
+                    child: Text(
+                      widget.doctorInfo.desc,
+                      textAlign: TextAlign.justify,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        height: 1.5,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Column(
@@ -232,7 +245,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                           const Text(
                             "Phản hồi",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500),
+                                fontSize: 20, fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 10),
                           const Text(
@@ -245,7 +258,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                             child: const Text(
                               "Xem tất cả",
                               style: TextStyle(
-                                color: Color(0xFF7165D6),
+                                color: Themes.buttonClr,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
                               ),
@@ -342,13 +355,10 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                         const Text(
                           "Kinh nghiệm",
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.black87,
-                          ),
+                              fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         FutureBuilder<List<DoctorExperience>>(
                             future: getDoctorExperiences(widget.doctorInfo.uid),
@@ -400,9 +410,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                               currentDesc,
                                               style: const TextStyle(
                                                 fontSize: 18,
-                                                fontWeight: FontWeight.w500,
+                                                height: 1.5,
+                                                fontWeight: FontWeight.w400,
                                                 color: Colors.black54,
                                               ),
+                                              textAlign: TextAlign.justify,
                                             ),
                                             const SizedBox(
                                               height: 10,
@@ -423,7 +435,8 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                             currentWorkplace,
                                             style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                              height: 1.5,
+                                              fontWeight: FontWeight.w500,
                                               color: Colors.black87,
                                             ),
                                           ),
@@ -434,9 +447,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                             currentDesc,
                                             style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w500,
+                                              height: 1.5,
+                                              fontWeight: FontWeight.w400,
                                               color: Colors.black54,
                                             ),
+                                            textAlign: TextAlign.justify,
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -461,12 +476,12 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                           "Học vấn",
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w600,
                             color: Colors.black87,
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         FutureBuilder<List<DoctorStudy>>(
                             future: getDoctorStudys(widget.doctorInfo.uid),
@@ -518,9 +533,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                               currentDesc,
                                               style: const TextStyle(
                                                 fontSize: 18,
-                                                fontWeight: FontWeight.w500,
+                                                height: 1.5,
+                                                fontWeight: FontWeight.w400,
                                                 color: Colors.black54,
                                               ),
+                                              textAlign: TextAlign.justify,
                                             ),
                                             const SizedBox(
                                               height: 10,
@@ -541,7 +558,8 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                             currentPlace,
                                             style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                              height: 1.5,
+                                              fontWeight: FontWeight.w500,
                                               color: Colors.black87,
                                             ),
                                           ),
@@ -552,9 +570,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                                             currentDesc,
                                             style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w500,
+                                              height: 1.5,
+                                              fontWeight: FontWeight.w400,
                                               color: Colors.black54,
                                             ),
+                                            textAlign: TextAlign.justify,
                                           ),
                                           const SizedBox(
                                             height: 20,
@@ -575,10 +595,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                       const Text(
                         "Nơi công tác",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
+                      const SizedBox(height: 10),
                       ListTile(
                         leading: Container(
                           padding: const EdgeInsets.all(10),
@@ -588,18 +609,23 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                           ),
                           child: const Icon(
                             Icons.location_on,
-                            color: Color(0xFF7165D6),
-                            size: 30,
+                            color: Themes.iconClr,
+                            size: 35,
                           ),
                         ),
                         title: Text(
                           widget.doctorInfo.workplace,
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              height: 1.5),
                         ),
                         subtitle: Text(
                           widget.doctorInfo.address,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              height: 1.5),
                         ),
                       ),
                     ],
@@ -650,7 +676,7 @@ class BottomSheetContent extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.symmetric(vertical: 18),
               decoration: BoxDecoration(
-                color: const Color(0xFF7165D6),
+                color: Themes.buttonClr,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Center(
@@ -675,7 +701,7 @@ class BottomSheetContent extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.symmetric(vertical: 18),
               decoration: BoxDecoration(
-                color: const Color(0xFF7165D6),
+                color: Themes.buttonClr,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Center(
