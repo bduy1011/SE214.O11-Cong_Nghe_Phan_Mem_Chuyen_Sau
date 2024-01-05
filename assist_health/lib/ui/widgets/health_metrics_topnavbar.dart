@@ -4,13 +4,13 @@ import 'package:assist_health/ui/user_screens/health_bmi.dart';
 import 'package:assist_health/ui/user_screens/health_height.dart';
 import 'package:assist_health/ui/user_screens/health_temperature.dart';
 import 'package:assist_health/ui/user_screens/health_weight.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class HealthMetricsTopNavBar extends StatefulWidget {
-  const HealthMetricsTopNavBar({super.key});
+  UserProfile userProfile;
+
+  HealthMetricsTopNavBar({super.key, required this.userProfile});
 
   @override
   State<HealthMetricsTopNavBar> createState() => _HealthMetricsTopNavBarState();
@@ -26,13 +26,10 @@ class _HealthMetricsTopNavBarState extends State<HealthMetricsTopNavBar> {
   ];
   final PageController _pageController = PageController();
   bool _isSelectingTab = false;
-  bool isLoading = false;
-  UserProfile? _userProfile;
 
   @override
   void initState() {
     super.initState();
-    getUserData();
     _pageController.addListener(_onPageChanged);
   }
 
@@ -66,38 +63,11 @@ class _HealthMetricsTopNavBarState extends State<HealthMetricsTopNavBar> {
     super.dispose();
   }
 
-  Future<void> getUserData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('health_profiles')
-        .doc('main_profile')
-        .get();
-
-    if (snapshot.exists) {
-      setState(() {
-        _userProfile =
-            UserProfile.fromJson(snapshot.data() as Map<String, dynamic>);
-        isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Theo dỏi chỉ số sức khỏe',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Theo dỏi chỉ số sức khỏe'),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -109,34 +79,30 @@ class _HealthMetricsTopNavBarState extends State<HealthMetricsTopNavBar> {
           ),
         ),
       ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _tabLabels.length,
-                      itemBuilder: (context, index) {
-                        return _buildTabButton(index);
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      children: [
-                        HealthHeightScreen(userProfile: _userProfile!),
-                        HealthWeightScreen(userProfile: _userProfile!),
-                        HealthBMIScreen(userProfile: _userProfile!),
-                        HealthTemperatureScreen(userProfile: _userProfile!),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _tabLabels.length,
+              itemBuilder: (context, index) {
+                return _buildTabButton(index);
+              },
+            ),
+          ),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: [
+                HealthHeightScreen(userProfile: widget.userProfile),
+                HealthWeightScreen(userProfile: widget.userProfile),
+                HealthBMIScreen(userProfile: widget.userProfile),
+                HealthTemperatureScreen(userProfile: widget.userProfile),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -150,7 +116,7 @@ class _HealthMetricsTopNavBarState extends State<HealthMetricsTopNavBar> {
           _onTabSelected(index);
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border(
@@ -163,7 +129,7 @@ class _HealthMetricsTopNavBarState extends State<HealthMetricsTopNavBar> {
               style: TextStyle(
                   color: isSelected ? Colors.blue : Colors.black,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  fontSize: 15),
+                  fontSize: 16),
             ),
           ),
         ),

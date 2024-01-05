@@ -136,7 +136,6 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
         toolbarHeight: 50,
         title: const Text('Đặt lịch tư vấn'),
         titleTextStyle: const TextStyle(fontSize: 16),
@@ -438,7 +437,7 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
               ),
               Container(
                 width: double.infinity,
-                height: 195,
+                height: 180,
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 decoration: BoxDecoration(
                     color: Colors.blueGrey.withOpacity(0.1),

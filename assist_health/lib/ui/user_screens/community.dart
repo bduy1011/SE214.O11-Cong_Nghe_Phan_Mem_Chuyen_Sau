@@ -65,17 +65,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-            'Chọn chủ đề',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: SizedBox(
-            height: 400,
-            width: 400,
+          title: const Text('Chọn chủ đề'),
+          content: Container(
+            height: 300,
+            width: 400, // Set the height as per your requirement
             child: SingleChildScrollView(
               child: StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
@@ -87,11 +80,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       return CheckboxListTile(
                         title: Row(
                           children: [
-                            SizedBox(width: 160, child: Text(category)),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            if (isSelected) const Icon(Icons.check),
+                            Text(category),
+                            // if (isSelected) const Icon(Icons.check),
                           ],
                         ),
                         value: isSelected,
@@ -141,7 +131,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
         title: const Text('Đặt câu hỏi'),
         centerTitle: true,
         flexibleSpace: Container(
@@ -165,12 +154,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Giới tính:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   _genderToggleGender(),
                 ],
@@ -183,8 +173,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Tuổi:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   Expanded(
@@ -213,41 +204,33 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Chủ đề:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: _showCategoryDialog,
-                    child: Text(
-                      'Chọn chủ đề',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Themes.gradientLightClr, // Đặt màu nền là màu đỏ
-                      onPrimary: Colors.white, // Đặt màu chữ là màu trắng
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Wrap(
                     children: selectedCategories.map((category) {
-                      return Container(
-                        margin: EdgeInsets.only(right: 5),
-                        child: Chip(
-                          label: Text(category),
-                          onDeleted: () {
-                            setState(() {
-                              selectedCategories.remove(category);
-                            });
-                          },
-                        ),
+                      return Chip(
+                        label: Text(category),
+                        onDeleted: () {
+                          setState(() {
+                            selectedCategories.remove(category);
+                          });
+                        },
                       );
                     }).toList(),
+                  ),
+                  const SizedBox(height: 5),
+                  ElevatedButton(
+                    onPressed: _showCategoryDialog,
+                    child: const Text(
+                      'Chọn chủ đề',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ],
               ),
@@ -265,8 +248,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Tiêu đề:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
@@ -296,8 +280,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Nội dung:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
@@ -309,7 +294,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       border: OutlineInputBorder(),
                       hintText: "Nhập nội dung...",
                     ),
-                    maxLines: 5,
+                    maxLines: 10,
                   ),
                 ],
               ),
@@ -338,7 +323,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     content: contentController.text,
                     categories: selectedCategories,
                     questionUserId: currentUserId,
-                    date: DateTime.now(),
                   );
 
                   await FirebaseFirestore.instance
@@ -351,7 +335,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     'content': question.content,
                     'categories': FieldValue.arrayUnion(question.categories),
                     'questionUserId': currentUserId,
-                    'date': question.date!,
                   });
 
                   // ignore: use_build_context_synchronously
@@ -373,7 +356,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 Icons.send,
                 color: Colors.white,
               ),
-              backgroundColor: Themes.gradientDeepClr,
+              backgroundColor: Themes.buttonClr,
               label: const Text(
                 'Gửi',
                 style: TextStyle(
@@ -381,10 +364,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   fontSize: 18,
                 ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            SizedBox(
-              height: 20,
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
             ),
           ],
         ),
@@ -497,7 +477,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         value: age.toDouble(),
         min: 0,
         max: 100,
-        activeColor: Themes.gradientLightClr,
+        activeColor: Themes.selectedClr,
         divisions: 100,
         label: '${age.round().toString()} tuổi',
         onChanged: (newValue) {

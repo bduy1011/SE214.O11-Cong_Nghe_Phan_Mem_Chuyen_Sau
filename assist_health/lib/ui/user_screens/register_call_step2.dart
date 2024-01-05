@@ -86,7 +86,6 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
         toolbarHeight: 50,
         title: const Text('Xác nhận thông tin'),
         titleTextStyle: const TextStyle(fontSize: 16),
@@ -952,7 +951,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: (widget.isEdit) ? 80 : 160,
+        height: (widget.isEdit) ? 70 : 150,
         padding: const EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 15,

@@ -5,12 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assist_health/models/other/question.dart';
-import 'package:intl/intl.dart';
 
 class QuestionDetailScreen extends StatefulWidget {
   final Question question;
 
-  const QuestionDetailScreen({super.key, required this.question});
+  const QuestionDetailScreen({Key? key, required this.question})
+      : super(key: key);
 
   @override
   State<QuestionDetailScreen> createState() => _QuestionDetailScreenState();
@@ -68,16 +68,10 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate =
-        DateFormat('dd/MM/yyyy').format(widget.question.date!);
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Chi tiết câu hỏi',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Câu hỏi'),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -93,30 +87,8 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                child: Icon(
-                  Icons.person,
-                  size: 30,
-                  color: Colors.purple.withOpacity(0.5),
-                ),
-              ),
-              title: Text(
-                '${widget.question.gender}, ${widget.question.age} tuổi',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                formattedDate,
-                style: const TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -124,7 +96,15 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                     'Chủ đề: ${widget.question.title}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tuổi: ${widget.question.age} - Giới tính: ${widget.question.gender}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -139,38 +119,8 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: widget.question.categories
-                    .map((category) => Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Themes.gradientLightClr,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              category,
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.white),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 0.5,
-              height: 10,
-            ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Câu trả lời (${answers.length}):',
                 style: const TextStyle(
@@ -189,12 +139,10 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                 String userId = answerData['userId'];
 
                 return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
+                  contentPadding: const EdgeInsets.all(16.0),
                   tileColor: Colors.grey[100],
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   title: FutureBuilder<DocumentSnapshot>(
                     future: FirebaseFirestore.instance
@@ -222,11 +170,10 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                             Row(
                               children: [
                                 isAnswererAuthor
-                                    ? CircleAvatar(
+                                    ? const CircleAvatar(
                                         child: Icon(
                                           Icons.person,
                                           size: 30,
-                                          color: Colors.purple.withOpacity(0.5),
                                         ),
                                       )
                                     : CircleAvatar(
@@ -248,14 +195,9 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Container(
-                              width: double.infinity,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 6),
-                              child: Text(
-                                answer,
-                                style: const TextStyle(fontSize: 16),
-                              ),
+                            Text(
+                              'Answer: $answer',
+                              style: const TextStyle(fontSize: 16),
                             ),
                             if (currentUserRole == 'admin')
                               Row(
@@ -265,7 +207,7 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                                     onPressed: () {
                                       _showDeleteConfirmationDialog(answerData);
                                     },
-                                    icon: const Icon(Icons.delete),
+                                    icon: Icon(Icons.delete),
                                     color: Colors.red,
                                   ),
                                 ],
@@ -273,57 +215,41 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                           ],
                         );
                       }
-                      return const Center(
-                          child:
-                              CircularProgressIndicator()); // While waiting for the data, show a loading indicator
+
+                      return const CircularProgressIndicator(); // While waiting for the data, show a loading indicator
                     },
                   ),
                 );
               },
             ),
+            if (widget.question.questionUserId == currentUser.uid ||
+                currentUserRole == "doctor")
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _showAnswerDialog(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.pink, // Change the button color
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: const Text('Thêm câu trả lời'),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: (widget.question.questionUserId == currentUser.uid ||
-              currentUserRole == "doctor")
-          ? Container(
-              height: 70,
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 10,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.blueGrey,
-                    width: 0.2,
-                  ),
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  _showAnswerDialog(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(13),
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    color: Themes.gradientDeepClr,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Thêm tin nhắn',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
     );
   }
 
@@ -381,22 +307,11 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'Thêm câu trả lời',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              height: 2,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: SizedBox(
-            width: 300,
-            child: TextField(
-              controller: answerController,
-              maxLines: 5,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: 'Nhập câu trả lời'),
+          title: const Text('Thêm câu trả lời'),
+          content: TextField(
+            controller: answerController,
+            decoration: const InputDecoration(
+              labelText: 'Câu trả lời',
             ),
           ),
           actions: [

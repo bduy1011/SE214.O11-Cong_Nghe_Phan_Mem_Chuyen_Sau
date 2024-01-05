@@ -10,7 +10,6 @@ class Question {
   int answerCount;
   List<String> answers;
   String questionUserId;
-  DateTime? date;
 
   Question({
     required this.id,
@@ -24,6 +23,5 @@ class Question {
     this.likes = 0,
     this.isLiked = false,
     required this.questionUserId,
-    this.date,
   });
 }

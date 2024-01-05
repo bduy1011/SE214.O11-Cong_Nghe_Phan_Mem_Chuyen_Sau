@@ -101,7 +101,6 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
     return Scaffold(
         backgroundColor: Themes.backgroundClr,
         appBar: AppBar(
-          foregroundColor: Colors.white,
           toolbarHeight: 50,
           title: const Text('Thông tin bác sĩ'),
           titleTextStyle: const TextStyle(fontSize: 16),
@@ -1590,7 +1589,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: 135,
+          height: 130,
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
             border: Border(

@@ -70,11 +70,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text('Thêm Bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
-        centerTitle: true,
+        title: const Text('Thêm Bác sĩ'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -424,8 +420,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
       String email = _emailController.text.trim();
       String description = _descriptionController.text.trim();
       String workplace = _workplaceController.text.trim();
-      String experienceText = _experiencetextController.text.trim();
-      String studyTexT= _studytextController.text.trim();
+
       // Validate that all required fields are filled
       if (name.isEmpty ||
           email.isEmpty ||
@@ -491,8 +486,6 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
         'role': 'doctor',
         'description': _descriptionController.text,
         'workplace': _workplaceController.text,
-        'experienceText':_experiencetextController.text,
-        'studyText':_studytextController.text,
         'experiences': _experiences
             .map((experience) => experience.timelineDescriptions)
             .expand((descriptions) => descriptions)

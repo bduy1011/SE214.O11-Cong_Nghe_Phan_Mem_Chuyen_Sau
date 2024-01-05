@@ -136,11 +136,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Chi tiêt lịch khám',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Chi tiêt lịch khám'),
         elevation: 0,
         centerTitle: true,
         flexibleSpace: Container(
