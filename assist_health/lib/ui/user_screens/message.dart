@@ -1,3 +1,4 @@
+import 'package:assist_health/others/methods.dart';
 import 'package:assist_health/models/doctor/doctor_info.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/user_screens/chatroom.dart';
@@ -6,13 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+  const MessageScreen({super.key});
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserver {
+class _MessageScreenState extends State<MessageScreen>
+    with WidgetsBindingObserver {
   List<Map<String, dynamic>> doctorList = [];
   bool isLoading = false;
   Map<String, dynamic>? userMap;
@@ -24,32 +26,41 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // setStatus("online");
     _auth.authStateChanges().listen((User? user) {
       if (user != null) {
+        // User is signed in, update status to "online"
         setStatus("online");
       } else {
+        // User is signed out, update status to "offline"
         setStatus("offline");
       }
     });
     onLoadDoctors();
   }
 
+  // void setStatus(String status) async {
+  //   await _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+  //     "status": status,
+  //   });
+  // }
   void setStatus(String status) async {
     if (_auth.currentUser != null) {
-      await _firestore
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .update({"status": status});
+      await _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+        "status": status,
+      });
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
+      // App is in the foreground, user is online
       if (_auth.currentUser != null) {
         setStatus("online");
       }
     } else {
+      // App is in the background, user is considered offline
       if (_auth.currentUser != null) {
         setStatus("offline");
       }
@@ -57,9 +68,12 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
   }
 
   String chatRoomId(String user1, String user2) {
-    return user1[0].toLowerCase().codeUnits[0] > user2[0].toLowerCase().codeUnits[0]
-        ? "$user1$user2"
-        : "$user2$user1";
+    if (user1[0].toLowerCase().codeUnits[0] >
+        user2[0].toLowerCase().codeUnits[0]) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
   }
 
   void onSearch() async {
@@ -68,8 +82,7 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
     setState(() {
       isLoading = true;
     });
-
-    String searchText = _search.text.trim().toLowerCase();
+    String searchText = _search.text.trim();
     if (searchText.isEmpty) {
       setState(() {
         onLoadDoctors();
@@ -77,17 +90,19 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
       });
       return;
     }
-
     await firestore
         .collection('users')
-        .where("role", isEqualTo: "doctor")
+        .where("email", isEqualTo: searchText)
         .get()
         .then((value) {
       setState(() {
-        doctorList = value.docs
-            .where((doc) => doc['name'].toLowerCase().contains(searchText))
-            .map((doc) => doc.data())
-            .toList();
+        if (value.docs.isNotEmpty) {
+          userMap = value.docs[0].data();
+          doctorList = [userMap!];
+        } else {
+          userMap = null;
+          doctorList = [];
+        }
         isLoading = false;
       });
     });
@@ -119,6 +134,7 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
     });
   }
 
+  //online offline
   Color getStatusDotColor(bool isOnline) {
     return isOnline ? Colors.green : Colors.red;
   }
@@ -156,7 +172,7 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
               child: Column(
                 children: [
                   SizedBox(
-                    height: size.height / 40,
+                    height: size.height / 20,
                   ),
                   Container(
                     height: size.height / 14,
@@ -167,7 +183,7 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
                       width: size.width / 1.15,
                       child: TextField(
                         controller: _search,
-                        onChanged: (value) {
+                        onSubmitted: (value) {
                           onSearch();
                         },
                         decoration: InputDecoration(
@@ -181,74 +197,121 @@ class _MessageScreenState extends State<MessageScreen> with WidgetsBindingObserv
                     ),
                   ),
                   SizedBox(
-                    height: size.height / 60,
+                    height: size.height / 50,
                   ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Themes.buttonClr,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: onSearch,
+                    child: const Text(
+                      "Tìm kiếm",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height / 30,
+                  ),
+                  /*FutureBuilder<List<DoctorInfo>>(
+                    future: getInfoDoctors(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const SizedBox(
+                            height: 290,
+                            width: double.infinity,
+                            child: Center(
+                              child: Text('Something went wrong'),
+                            ));
+                      }
 
-                  if (doctorList.isNotEmpty)
-                    Container(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: doctorList.length,
-                        itemBuilder: (context, index) {
-                          Map<String, dynamic> doctor = doctorList[index];
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 5,
-                            ),
-                            child: ListTile(
-                              onTap: () {
-                                String roomId = chatRoomId(
-                                  _auth.currentUser!.displayName!,
-                                  doctor['name'],
-                                );
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => ChatRoom(
-                                      chatRoomId: roomId,
-                                      userMap: doctor,
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox(
+                            height: 290,
+                            width: double.infinity,
+                            child: Center(
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ));
+                      }
+
+                      return Container(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: doctorList.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> doctor = doctorList[index];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  String roomId = chatRoomId(
+                                      _auth.currentUser!.displayName!,
+                                      doctor['name']);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatRoom(
+                                        chatRoomId: roomId,
+                                        userMap: doctor,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              leading: Stack(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(
-                                      doctor['imageURL'],
+                                  );
+                                },
+                                leading: Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(
+                                          snapshot.data![index].image),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                      height: 12,
-                                      width: 12,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: getStatusDotColor(
-                                          doctor['status'] == 'online',
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: 12,
+                                        width: 12,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: getStatusDotColor(
+                                              doctor['status'] == 'online'),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              title: Text(
-                                doctor['name'],
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  height: 1.5,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
+                                  ],
                                 ),
+                                title: Text(
+                                  doctor['name'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    height: 1.5,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  doctor['email'],
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    height: 1.5,
+                                  ),
+                                ),
+                                trailing:
+                                    const Icon(Icons.chat, color: Colors.black),
                               ),
-                              trailing: const Icon(Icons.chat, color: Colors.black),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                */
                 ],
               ),
             ),

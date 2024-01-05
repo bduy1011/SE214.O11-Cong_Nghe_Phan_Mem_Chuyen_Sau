@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_print
+
 import 'package:assist_health/others/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assist_health/models/other/question.dart';
@@ -7,42 +8,19 @@ import 'package:assist_health/models/other/question.dart';
 class QuestionDetailScreen extends StatefulWidget {
   final Question question;
 
-  const QuestionDetailScreen({Key? key, required this.question}) : super(key: key);
+  const QuestionDetailScreen({super.key, required this.question});
 
   @override
   State<QuestionDetailScreen> createState() => _QuestionDetailScreenState();
 }
 
 class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
-  List<Map<String, dynamic>> answers = [];
-  late User currentUser;
-  late String? currentUserRole; 
+  List<String> answers = [];
   @override
   void initState() {
     super.initState();
     _loadAnswers();
-    _loadCurrentUserRole(); 
-    currentUserRole = '';
-    currentUser = FirebaseAuth.instance.currentUser!;
   }
-  void _loadCurrentUserRole() {
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get()
-        .then((docSnapshot) {
-      if (docSnapshot.exists) {
-        setState(() {
-          currentUserRole = docSnapshot.data()?['role'] ?? '';
-        });
-      }
-    }).catchError((error) {
-      print('Failed to load user role: $error');
-    });
-  }
-}
 
   void _loadAnswers() {
     FirebaseFirestore.instance
@@ -52,7 +30,7 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
         .then((docSnapshot) {
       if (docSnapshot.exists) {
         setState(() {
-          answers = List<Map<String, dynamic>>.from(docSnapshot.data()?['answers'] ?? []);
+          answers = List<String>.from(docSnapshot.data()?['answers'] ?? []);
         });
       }
     }).catchError((error) {
@@ -105,10 +83,7 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                   Text(
                     'Nội dung: ${widget.question.content}',
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      height: 1.5,
-                    ),
+                        fontSize: 16, fontWeight: FontWeight.w400, height: 1.5),
                   ),
                 ],
               ),
@@ -128,97 +103,21 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: answers.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> answerData = answers[index];
-                String answer = answerData['answer'];
-                String userId = answerData['userId'];
-
                 return ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  tileColor: Colors.grey[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  title: FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
-                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error loading user data');
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
-                        String imageUrl = userData['imageURL'];
-
-                        // Check if the current user is the author of the question
-                        // bool isCurrentUserAuthor = currentUser.uid == userId;
-                        bool isAnswererAuthor = widget.question.questionUserId == userId;
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                isAnswererAuthor
-                                    ? CircleAvatar(
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 30,
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundImage: NetworkImage(imageUrl) as ImageProvider<Object>,
-                                      ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  isAnswererAuthor
-                                      ? '${widget.question.gender}, ${widget.question.age} tuổi'
-                                      : '${userData['name']}', // Display 'You' for the author
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Answer: $answer',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        );
-                      }
-
-                      return CircularProgressIndicator(); // While waiting for the data, show a loading indicator
-                    },
-                  ),
+                  title: Text('Câu ${index + 1}:'),
+                  subtitle: Text(answers[index]),
                 );
               },
             ),
-      if (widget.question.questionUserId == currentUser.uid||currentUserRole == "doctor")
-           Center(
-            child: Padding(
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
                   _showAnswerDialog(context);
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.pink, // Change the button color
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // Adjust the border radius
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 child: const Text('Thêm câu trả lời'),
               ),
             ),
-          ),
-
           ],
         ),
       ),
@@ -250,6 +149,9 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
               onPressed: () {
                 String answer = answerController.text.trim();
                 if (answer.isNotEmpty) {
+                  setState(() {
+                    answers.add(answer);
+                  });
                   _saveAnswerToFirebase(answer);
                 }
                 Navigator.pop(context);
@@ -263,21 +165,14 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
   }
 
   void _saveAnswerToFirebase(String answer) {
-    String currentUserId = currentUser.uid;
     FirebaseFirestore.instance
         .collection('questions')
-        .doc(widget.question.id)
+        .doc(widget.question
+            .id) // Giả sử có trường "id" trong đối tượng Question để xác định câu hỏi cần lưu câu trả lời
         .update({
-          'answers': FieldValue.arrayUnion([
-            {
-              'answer': answer,
-              'userId': currentUserId,
-            }
-          ])
-        })
-        .then((_) {
+      'answers': FieldValue.arrayUnion([answer])
+    }).then((_) {
       print('Answer saved to Firestore');
-      _loadAnswers();
     }).catchError((error) {
       print('Failed to save answer: $error');
     });

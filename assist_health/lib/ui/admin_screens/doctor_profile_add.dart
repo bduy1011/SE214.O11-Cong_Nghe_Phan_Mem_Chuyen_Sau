@@ -465,7 +465,6 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
             .expand((descriptions) => descriptions)
             .toList(),
         'imageURL': downloadURL,
-        'status':'offline',
       });
 
       _showSuccessSnackBar('Doctor information saved successfully!');
