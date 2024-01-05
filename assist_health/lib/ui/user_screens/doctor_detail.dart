@@ -2,10 +2,8 @@ import 'package:assist_health/models/doctor/doctor_info.dart';
 import 'package:assist_health/others/methods.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/user_screens/register_call_step1.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,8 +19,6 @@ class DoctorDetailScreen extends StatefulWidget {
 }
 
 class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ScrollController _scrollController = ScrollController();
 
   bool _isFavorite = false;
@@ -58,8 +54,6 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
 
   DoctorInfo? _doctorInfo;
 
-  String uidDocFavoriteDoctor = '';
-
   @override
   void initState() {
     super.initState();
@@ -84,8 +78,6 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
     _selectedDate = _initialSelectedDate;
 
     initDate = _isCurrentMonthOfCurrentYear() ? _initialSelectedDate.day : 1;
-
-    checkFavoriteDoctor(_doctorInfo!.uid, _auth.currentUser!.uid);
   }
 
   @override
@@ -118,17 +110,11 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                 setState(() {
                   _isFavorite = !_isFavorite;
                 });
-                if (_isFavorite) {
-                  saveFavoriteDoctor(_doctorInfo!, _auth.currentUser!.uid);
-                } else {
-                  deleteFavoriteDoctor(uidDocFavoriteDoctor);
-                }
               },
               child: Container(
                 margin: const EdgeInsets.only(
                   right: 15,
                 ),
-                padding: const EdgeInsets.all(9),
                 child: Row(
                   children: [
                     (_isFavorite)
@@ -2019,47 +2005,5 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
     if (_isAnyTimeFrame(isMorning: true) == false &&
         _isAnyTimeFrame(isMorning: false) == false) return false;
     return true;
-  }
-
-  void saveFavoriteDoctor(DoctorInfo doctorInfo, String currentUid) {
-    _firestore
-        .collection('favorite_doctor')
-        .doc(DateTime.now().toString())
-        .set({
-      'doctorInfo': doctorInfo.toMap(),
-      'currentUid': currentUid,
-      'uidDoctor': doctorInfo.uid,
-    }).then((value) {
-      print('Favorite doctor saved successfully!');
-    }).catchError((error) {
-      print('Failed to save favorite doctor: $error');
-    });
-  }
-
-  void deleteFavoriteDoctor(String docFavoriteDoctorId) {
-    _firestore
-        .collection('favorite_doctor')
-        .doc(docFavoriteDoctorId)
-        .delete()
-        .then((value) {
-      print('Favorite doctor deleted successfully!');
-    }).catchError((error) {
-      print('Failed to delete favorite doctor: $error');
-    });
-  }
-
-  Future<void> checkFavoriteDoctor(String uidDoctor, String currentUid) async {
-    final QuerySnapshot snapshot = await _firestore
-        .collection('favorite_doctor')
-        .where('uidDoctor', isEqualTo: uidDoctor)
-        .where('currentUid', isEqualTo: currentUid)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      setState(() {
-        _isFavorite = true;
-        uidDocFavoriteDoctor = snapshot.docs.first.id;
-      });
-    }
   }
 }

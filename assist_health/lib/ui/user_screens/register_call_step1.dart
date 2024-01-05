@@ -263,7 +263,7 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
                               ),
                             ],
                           )
-                        : const SizedBox(),
+                        : SizedBox(),
                     const SizedBox(
                       width: 5,
                     ),
@@ -1461,14 +1461,14 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
                 barrierDismissible: false,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Thông báo'),
-                    content: const Text('Vui lòng chọn ngày và giờ đặt lịch.'),
+                    title: Text('Thông báo'),
+                    content: Text('Vui lòng chọn ngày và giờ đặt lịch.'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Đóng'),
+                        child: Text('Đóng'),
                       ),
                     ],
                   );

@@ -113,11 +113,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
       if (_appointmentSchedule!.status == 'Đã duyệt' &&
           isAfterEndTime(_appointmentSchedule!.time!,
               _appointmentSchedule!.selectedDate!)) {
-        if (_appointmentSchedule!.isExamined!) {
-          _appointmentSchedule!.status = 'Đã khám';
-        } else {
-          _appointmentSchedule!.status = 'Quá hẹn';
-        }
+        _appointmentSchedule!.status = 'Quá hẹn';
         _appointmentSchedule!
             .updateAppointmentStatus(_appointmentSchedule!.status!);
       }
@@ -168,7 +164,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         text: TextSpan(
                           children: <TextSpan>[
                             TextSpan(
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.red,
                                   height: 1.3,
                                 ),
@@ -207,7 +203,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         textAlign: TextAlign.justify,
                         text: TextSpan(
                           children: <TextSpan>[
-                            const TextSpan(
+                            TextSpan(
                                 style: TextStyle(
                                   color: Colors.purple,
                                   height: 1.3,
@@ -313,9 +309,9 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             const SizedBox(
                               width: 10,
                             ),
-                            const Text(
+                            Text(
                               'Ngày tạo phiếu',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
@@ -323,7 +319,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             Center(
                               child: Text(
                                 _appointmentSchedule!.receivedAppointmentTime!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
@@ -858,8 +854,6 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             ],
                           ),
                         ),
-
-                      // Thanh toán
                       Container(
                           padding: const EdgeInsets.only(
                             top: 10,
@@ -1130,19 +1124,19 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Xác nhận'),
-                              content: const Text(
+                              title: Text('Xác nhận'),
+                              content: Text(
                                   'Bạn có chắc chắn muốn hủy cuộc hẹn không?'),
                               actions: [
                                 TextButton(
-                                  child: const Text('Không'),
+                                  child: Text('Không'),
                                   onPressed: () {
                                     Navigator.of(context)
                                         .pop(); // Đóng hộp thoại
                                   },
                                 ),
                                 TextButton(
-                                  child: const Text('Xác nhận'),
+                                  child: Text('Xác nhận'),
                                   onPressed: () {
                                     // Thực hiện hành động khi xác nhận
                                     setState(() {
@@ -1172,13 +1166,13 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         padding: const EdgeInsets.all(15),
                         child: Text(
                           _buttonContext!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black,
                           ),
                         ),
                       ),
                     )
-                  : const SizedBox(),
+                  : SizedBox(),
             ],
           ),
         ),
@@ -1188,7 +1182,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
           ? Container(
               height: 70,
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(
@@ -1230,7 +1224,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         alignment: Alignment.center,
                         child: Text(
                           _buttonContext!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -1279,7 +1273,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                                 (_appointmentSchedule!.idFeedback == '')
                                     ? 'Đánh giá'
                                     : 'Xem đánh giá',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
@@ -1287,11 +1281,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             ),
                           ),
                         )
-                      : const SizedBox(),
+                      : SizedBox(),
                 ],
               ),
             )
-          : const SizedBox(),
+          : SizedBox(),
     );
   }
 
@@ -1652,11 +1646,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return const Text('Không tìm thấy tài liệu phản hồi');
+              return Text('Không tìm thấy tài liệu phản hồi');
             }
             Map<String, dynamic> feedbackData = snapshot.data!.data()!;
             Timestamp rateDate = feedbackData['rateDate'];
@@ -1670,13 +1664,13 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                 children: [
                   Text(
                     feedbackData['username'].toString().toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 5,
                   ),
                   RatingBar.builder(
@@ -1686,30 +1680,30 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                     allowHalfRating: true,
                     itemCount: 5,
                     itemSize: 20,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 1),
-                    itemBuilder: (context, _) => const Icon(
+                    itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                    itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
                     ignoreGestures: true,
                     onRatingUpdate: (rating) {},
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   Text(
                     feedbackData['content'],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   Text(
                     formattedDate,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                         fontStyle: FontStyle.italic),
@@ -1721,7 +1715,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Đóng'),
+                  child: Text('Đóng'),
                 ),
               ],
             );
@@ -1796,7 +1790,6 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
           builder: (context) => CallPage(
                 channelName: _channel,
                 role: _role,
-                appointmentSchedule: _appointmentSchedule!,
               )),
     );
   }

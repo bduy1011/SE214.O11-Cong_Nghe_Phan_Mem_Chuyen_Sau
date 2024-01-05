@@ -23,13 +23,18 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
   String? _selectedStatus;
 
   final List<String> _specialtyOptions = [
-    'Tổng quát',
-    'Nhi khoa',
-    'Sản - Phụ khoa',
-    'Tâm lý',
-    'Da liễu',
-    'Răng - Hàm - Mặt',
-    'Tai - Mũi - Họng',
+    "Tay mũi họng",
+    "Bệnh nhiệt đới",
+    "Nội thần kinh",
+    "Mắt",
+    "Nha khoa",
+    "Chấn thương chỉnh hình",
+    "Tim mạch",
+    "Tiêu hóa"
+    "Hô hấp"
+    "Huyết học"
+    "Nội tiết"
+
   ];
   String? _selectedSpecialtyRadio;
   String? _selectedSpecialty;
@@ -299,7 +304,7 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
 
           // Xử lý lọc tìm kiếm tên bác sĩ
           List<DoctorInfo> filterDoctorWithName;
-          if (_searchName!.trim() != '') {
+          if (_searchName! != '') {
             filterDoctorWithName = filterDoctorWithStatus
                 .where((doctor) => doctor.name
                     .toLowerCase()

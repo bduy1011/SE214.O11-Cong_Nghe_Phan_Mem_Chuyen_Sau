@@ -1,7 +1,6 @@
 import 'package:assist_health/models/user/user_profile.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/others/methods.dart';
-import 'package:assist_health/ui/user_screens/favorite_doctor_list.dart';
 import 'package:assist_health/ui/user_screens/health_profile_detail.dart';
 import 'package:assist_health/ui/user_screens/health_profile_list.dart';
 import 'package:assist_health/ui/widgets/health_metrics_topnavbar.dart';
@@ -204,14 +203,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   left: 8,
                                 ),
                                 child: ListTile(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FavoriteDoctorList(),
-                                      ),
-                                    );
-                                  },
+                                  onTap: () {},
                                   leading: const Icon(
                                     Icons.favorite,
                                     color: Colors.red,

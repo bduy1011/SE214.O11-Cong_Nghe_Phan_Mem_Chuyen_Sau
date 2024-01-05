@@ -39,8 +39,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   void initState() {
-    super.initState();
     _appointmentScheduleController!.addStream(getAppointmentSchdedules());
+    super.initState();
   }
 
   @override
@@ -108,11 +108,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         try {
           setState(() {
             appointmentScheduleList.removeAt(index);
-            if (tempAppointmentSchedule.isExamined!) {
-              tempAppointmentSchedule.status = 'Đã khám';
-            } else {
-              tempAppointmentSchedule.status = 'Quá hẹn';
-            }
+            tempAppointmentSchedule.status = 'Quá hẹn';
             tempAppointmentSchedule
                 .updateAppointmentStatus(tempAppointmentSchedule.status!);
           });
@@ -159,7 +155,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(4),
-                    hintText: 'Tên bác sĩ, bệnh nhân, mã phiếu khám',
+                    hintText: 'Tên bác sĩ, tên bệnh nhân',
                     hintStyle: const TextStyle(
                       color: Colors.white70,
                       fontSize: 15,
@@ -408,16 +404,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       if (_searchText == '') {
                         appointmentSchedulesSearch = appointmentSchedulesStatus;
                       } else {
-                        String searchText = _searchText.trim().toLowerCase();
+                        String searchText = _searchText.toLowerCase();
                         appointmentSchedulesSearch = appointmentSchedulesStatus
                             .where((element) =>
                                 element.doctorInfo!.name
                                     .toLowerCase()
                                     .contains(searchText) ||
                                 element.userProfile!.name
-                                    .toLowerCase()
-                                    .contains(searchText) ||
-                                element.appointmentCode!
                                     .toLowerCase()
                                     .contains(searchText))
                             .toList();
@@ -463,7 +456,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       }
                       //--------------------------------
 
-                      //Hiển thị danh sách cuộc hẹn
+                      // Hiển thị danh sách cuộc hẹn
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
