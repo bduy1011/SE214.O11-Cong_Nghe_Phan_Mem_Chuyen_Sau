@@ -94,11 +94,11 @@ Stream<List<DoctorInfo>> getInfoDoctors() {
       .map((QuerySnapshot querySnapshot) {
     final List<DoctorInfo> doctorInfos = [];
 
-    querySnapshot.docs.forEach((doctorDoc) {
+    for (var doctorDoc in querySnapshot.docs) {
       final doctorData = doctorDoc.data() as Map<String, dynamic>?;
       final DoctorInfo doctorInfo = DoctorInfo.fromJson(doctorData!);
       doctorInfos.add(doctorInfo);
-    });
+    }
 
     return doctorInfos;
   });
@@ -212,7 +212,7 @@ Future<DoctorSchedule> getSchedulesDoctor(
 }
 
 Stream<List<UserProfile>> getProfileUsers(String uid) async* {
-  List<UserProfile> doctorProfiles = [];
+  List<UserProfile> userProfiles = [];
 
   final docSnapshot = await _firestore
       .collection('users')
@@ -230,9 +230,27 @@ Stream<List<UserProfile>> getProfileUsers(String uid) async* {
     }
   }).whereType<UserProfile>();
 
-  doctorProfiles.addAll(listOfProfiles);
+  userProfiles.addAll(listOfProfiles);
 
-  yield doctorProfiles.reversed.toList();
+  yield userProfiles.reversed.toList();
+}
+
+Stream<UserProfile> getMainProfileUsers(String uid) async* {
+  UserProfile userProfile = UserProfile('', '', '', '', '', '', '', '');
+
+  final docSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('health_profiles')
+      .doc('main_profile')
+      .get();
+
+  if (docSnapshot.exists) {
+    final data = docSnapshot.data();
+    userProfile = UserProfile.fromJson(data!);
+  }
+
+  yield userProfile;
 }
 
 Future<List<UserHeight>> getHeightDataUser(String uid, String idDoc) async {
@@ -399,6 +417,46 @@ Stream<List<AppointmentSchedule>> getAppointmentSchdedules() {
   });
 }
 
+Stream<List<AppointmentSchedule>> getAllAppointmentSchdedules() {
+  return _firestore
+      .collection('appointment_schedule')
+      .snapshots()
+      .map((QuerySnapshot querySnapshot) {
+    final List<AppointmentSchedule> appointmentSchedules = [];
+
+    for (var appointmentScheduleDoc in querySnapshot.docs) {
+      final appointmentScheduleData =
+          appointmentScheduleDoc.data() as Map<String, dynamic>?;
+      final AppointmentSchedule appointmentSchedule =
+          AppointmentSchedule.fromJson(appointmentScheduleData!);
+      appointmentSchedules.add(appointmentSchedule);
+    }
+
+    return appointmentSchedules;
+  });
+}
+
+Stream<List<AppointmentSchedule>> getAppointmentSchedulesByDoctor(
+    String doctorId) {
+  return _firestore
+      .collection('appointment_schedule')
+      // .where('doctorid', isEqualTo: doctorId)
+      .snapshots()
+      .map((QuerySnapshot querySnapshot) {
+    final List<AppointmentSchedule> appointmentSchedules = [];
+
+    for (var appointmentScheduleDoc in querySnapshot.docs) {
+      final appointmentScheduleData =
+          appointmentScheduleDoc.data() as Map<String, dynamic>?;
+      final AppointmentSchedule appointmentSchedule =
+          AppointmentSchedule.fromJson(appointmentScheduleData!);
+      appointmentSchedules.add(appointmentSchedule);
+    }
+
+    return appointmentSchedules;
+  });
+}
+
 showToastMessage(BuildContext context, String message) {
   showToast(message,
       context: context,
@@ -462,12 +520,6 @@ bool isWithinTimeRange(String time, DateTime selectedDate) {
 
   // Lấy thời gian hiện tại
   DateTime now = DateTime.now();
-  print(selectedDate.toString());
-
-  print(now.isAfter(startTime));
-  print(startTime.toString());
-  print(now.isBefore(endTime));
-  print(endTime.toString());
 
   // Kiểm tra xem thời gian hiện tại có nằm trong khoảng thời gian đã cho hay không
   return now.isAfter(startTime) && now.isBefore(endTime);
@@ -478,11 +530,8 @@ bool isAfterEndTime(String time, DateTime selectedDate) {
   List<String> timeParts = time.split('-');
   String endTimeString = timeParts[1].trim();
   List<int> endTimeParts = endTimeString.split(':').map(int.parse).toList();
-  selectedDate = selectedDate.subtract(Duration(
-    hours: selectedDate.hour,
-    minutes: selectedDate.minute,
-    seconds: selectedDate.second,
-  ));
+  selectedDate = DateTime(
+      selectedDate.year, selectedDate.month, selectedDate.day, 0, 0, 0);
   DateTime endTime = selectedDate
       .add(Duration(hours: endTimeParts[0], minutes: endTimeParts[1]));
   // Lấy thời gian hiện tại

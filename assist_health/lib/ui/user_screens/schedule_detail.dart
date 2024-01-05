@@ -113,7 +113,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
       if (_appointmentSchedule!.status == 'Đã duyệt' &&
           isAfterEndTime(_appointmentSchedule!.time!,
               _appointmentSchedule!.selectedDate!)) {
-        _appointmentSchedule!.status = 'Quá hẹn';
+        if (_appointmentSchedule!.isExamined!) {
+          _appointmentSchedule!.status = 'Đã khám';
+        } else {
+          _appointmentSchedule!.status = 'Quá hẹn';
+        }
         _appointmentSchedule!
             .updateAppointmentStatus(_appointmentSchedule!.status!);
       }
@@ -132,7 +136,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        title: const Text('Chi tiêt lịch khám'),
+        foregroundColor: Colors.white,
+        title: const Text(
+          'Chi tiêt lịch khám',
+          style: TextStyle(fontSize: 20),
+        ),
         elevation: 0,
         centerTitle: true,
         flexibleSpace: Container(
@@ -164,7 +172,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         text: TextSpan(
                           children: <TextSpan>[
                             TextSpan(
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.red,
                                   height: 1.3,
                                 ),
@@ -203,7 +211,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         textAlign: TextAlign.justify,
                         text: TextSpan(
                           children: <TextSpan>[
-                            TextSpan(
+                            const TextSpan(
                                 style: TextStyle(
                                   color: Colors.purple,
                                   height: 1.3,
@@ -309,9 +317,9 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Text(
+                            const Text(
                               'Ngày tạo phiếu',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                               ),
                             ),
@@ -319,7 +327,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             Center(
                               child: Text(
                                 _appointmentSchedule!.receivedAppointmentTime!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
@@ -854,6 +862,8 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             ],
                           ),
                         ),
+
+                      // Thanh toán
                       Container(
                           padding: const EdgeInsets.only(
                             top: 10,
@@ -1124,19 +1134,19 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Xác nhận'),
-                              content: Text(
+                              title: const Text('Xác nhận'),
+                              content: const Text(
                                   'Bạn có chắc chắn muốn hủy cuộc hẹn không?'),
                               actions: [
                                 TextButton(
-                                  child: Text('Không'),
+                                  child: const Text('Không'),
                                   onPressed: () {
                                     Navigator.of(context)
                                         .pop(); // Đóng hộp thoại
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('Xác nhận'),
+                                  child: const Text('Xác nhận'),
                                   onPressed: () {
                                     // Thực hiện hành động khi xác nhận
                                     setState(() {
@@ -1166,13 +1176,13 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         padding: const EdgeInsets.all(15),
                         child: Text(
                           _buttonContext!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                           ),
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
         ),
@@ -1182,7 +1192,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
           ? Container(
               height: 70,
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(
@@ -1224,7 +1234,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                         alignment: Alignment.center,
                         child: Text(
                           _buttonContext!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -1273,7 +1283,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                                 (_appointmentSchedule!.idFeedback == '')
                                     ? 'Đánh giá'
                                     : 'Xem đánh giá',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
@@ -1281,11 +1291,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                             ),
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ],
               ),
             )
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 
@@ -1646,11 +1656,11 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Text('Không tìm thấy tài liệu phản hồi');
+              return const Text('Không tìm thấy tài liệu phản hồi');
             }
             Map<String, dynamic> feedbackData = snapshot.data!.data()!;
             Timestamp rateDate = feedbackData['rateDate'];
@@ -1664,13 +1674,13 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                 children: [
                   Text(
                     feedbackData['username'].toString().toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       height: 1.5,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   RatingBar.builder(
@@ -1680,30 +1690,30 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                     allowHalfRating: true,
                     itemCount: 5,
                     itemSize: 20,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 1),
-                    itemBuilder: (context, _) => Icon(
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                    itemBuilder: (context, _) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
                     ignoreGestures: true,
                     onRatingUpdate: (rating) {},
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     feedbackData['content'],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       height: 1.5,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     formattedDate,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                         fontStyle: FontStyle.italic),
@@ -1715,7 +1725,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Đóng'),
+                  child: const Text('Đóng'),
                 ),
               ],
             );
@@ -1784,12 +1794,14 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
   Future<void> onJoin() async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
+    // ignore: use_build_context_synchronously
     await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => CallPage(
                 channelName: _channel,
                 role: _role,
+                appointmentSchedule: _appointmentSchedule!,
               )),
     );
   }

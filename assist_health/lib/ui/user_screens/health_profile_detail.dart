@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:io';
 import 'dart:ui';
@@ -58,7 +58,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hồ sơ người thân'),
+        title: const Text(
+          'Hồ sơ người thân',
+          style: TextStyle(fontSize: 20),
+        ),
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         flexibleSpace: Container(
@@ -583,7 +587,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           .set({
         'data': FieldValue.arrayUnion([downloadURL]),
       }, SetOptions(merge: true));
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<List<String>> getFileURLsFromStorage() async {

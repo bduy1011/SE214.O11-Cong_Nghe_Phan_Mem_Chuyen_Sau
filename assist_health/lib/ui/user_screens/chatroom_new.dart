@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-
+import 'package:assist_health/models/doctor/doctor_info.dart';
+import 'package:assist_health/models/user/user_profile.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,74 +11,82 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-class ChatRoomDoctor extends StatefulWidget {
-  final Map<String, dynamic> userMap;
+class ChatRoomNew extends StatefulWidget {
   final String chatRoomId;
+  final UserProfile userProfile;
+  final DoctorInfo doctorInfo;
 
-  const ChatRoomDoctor(
-      {super.key, required this.chatRoomId, required this.userMap});
+  const ChatRoomNew(
+      {super.key,
+      required this.chatRoomId,
+      required this.userProfile,
+      required this.doctorInfo});
 
   @override
-  State<ChatRoomDoctor> createState() => _ChatRoomDoctorState();
+  State<ChatRoomNew> createState() => _ChatRoomNewState();
 }
 
-class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
+class _ChatRoomNewState extends State<ChatRoomNew> {
   final TextEditingController _message = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  File? imageFile;
+  List<File>? imageFiles = [];
 
-  Future getImage() async {
+  Future getImages() async {
     ImagePicker picker = ImagePicker();
 
-    await picker.pickImage(source: ImageSource.gallery).then((xFile) {
-      if (xFile != null) {
-        imageFile = File(xFile.path);
-        uploadImage();
+    await picker.pickMultiImage().then((List<XFile> xFiles) {
+      if (xFiles.isNotEmpty) {
+        imageFiles = xFiles.map((xFile) => File(xFile.path)).toList();
+        _uploadImages();
       }
     });
   }
 
-  Future uploadImage() async {
-    String fileName = const Uuid().v1();
-    int status = 1;
-
-    await _firestore
-        .collection('chatroom')
-        .doc(widget.chatRoomId)
-        .collection('chats')
-        .doc(fileName)
-        .set({
-      "sendby": _auth.currentUser!.displayName,
-      "message": "",
-      "type": "img",
-      "time": FieldValue.serverTimestamp(),
-    });
-
-    var ref =
-        FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
-
-    // ignore: body_might_complete_normally_catch_error
-    var uploadTask = await ref.putFile(imageFile!).catchError((error) async {
-      _firestore
-          .collection('chatroom')
-          .doc(widget.chatRoomId)
-          .collection('chats')
-          .doc(fileName)
-          .delete();
-      status = 0;
-    });
-
-    if (status == 1) {
-      String imageUrl = await uploadTask.ref.getDownloadURL();
+  Future _uploadImages() async {
+    for (File imageFile in imageFiles!) {
+      String fileName = const Uuid().v1();
+      int status = 1;
 
       await _firestore
           .collection('chatroom')
           .doc(widget.chatRoomId)
           .collection('chats')
           .doc(fileName)
-          .update({"message": imageUrl});
+          .set({
+        "sendby": _auth.currentUser!.displayName,
+        "message": "",
+        "type": "img",
+        "time": FieldValue.serverTimestamp(),
+      });
+
+      var ref =
+          FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
+
+      // ignore: body_might_complete_normally_catch_error
+      var uploadTask = await ref.putFile(imageFile).catchError((error) async {
+        _firestore
+            .collection('chatroom')
+            .doc(widget.chatRoomId)
+            .collection('chats')
+            .doc(fileName)
+            .delete();
+        status = 0;
+      });
+
+      if (status == 1) {
+        String imageUrl = await uploadTask.ref.getDownloadURL();
+
+        await _firestore
+            .collection('chatroom')
+            .doc(widget.chatRoomId)
+            .collection('chats')
+            .doc(fileName)
+            .update({"message": imageUrl});
+
+        print(imageUrl);
+      }
     }
   }
 
@@ -116,25 +125,29 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
             ),
           ),
         ),
+        foregroundColor: Colors.white,
         title: StreamBuilder<DocumentSnapshot>(
           stream: _firestore
               .collection("users")
-              .doc(widget.userMap['uid'])
+              .doc(widget.doctorInfo.uid)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var userData = snapshot.data!.data() as Map<String, dynamic>;
-              String name=widget.userMap['name'];
+              String name = widget.doctorInfo.name;
               if (userData['role'] == 'admin') {
-                  name = 'Chăm Sóc Khách Hàng'; // Set your fixed admin name here
-               }
+                name = 'Chăm Sóc Khách Hàng';
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name),
                   Text(
-                    userData['status'],
-                    style: const TextStyle(fontSize: 14),
+                    (name != 'Chăm Sóc Khách Hàng') ? 'Bác sĩ $name' : name,
+                    style: const TextStyle(fontSize: 16, height: 1.7),
+                  ),
+                  Text(
+                    'Bệnh nhân: ${widget.userProfile.name}',
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               );
@@ -148,7 +161,12 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
         child: Column(
           children: [
             SizedBox(
-              height: size.height / 1.25,
+              height: MediaQuery.of(context).viewInsets.bottom > 0
+                  ? size.height -
+                      MediaQuery.of(context).viewInsets.bottom -
+                      -65 -
+                      210
+                  : size.height / 1.2,
               width: size.width,
               child: StreamBuilder<QuerySnapshot>(
                 stream: _firestore
@@ -174,39 +192,37 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
                 },
               ),
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25)),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 65,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: getImages,
+              icon: const Icon(Icons.image),
+              color: Colors.blue,
+            ),
+            Expanded(
+              child: TextField(
+                controller: _message,
+                decoration: const InputDecoration(
+                  hintText: 'Nhắn tin',
+                  border: InputBorder.none,
+                ),
               ),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: getImage,
-                    icon: const Icon(Icons.image),
-                    color: Colors.blue,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: _message,
-                      decoration: const InputDecoration(
-                        hintText: 'Type a message...',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: onSendMessage,
-                    icon: const Icon(Icons.send),
-                    color: Colors.blue,
-                  ),
-                ],
-              ),
+            ),
+            IconButton(
+              onPressed: onSendMessage,
+              icon: const Icon(Icons.send),
+              color: Colors.blue,
             ),
           ],
         ),
@@ -223,6 +239,11 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
             alignment:
                 isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width < 300
+                    ? MediaQuery.of(context).size.width
+                    : 300,
+              ),
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
               margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               decoration: BoxDecoration(

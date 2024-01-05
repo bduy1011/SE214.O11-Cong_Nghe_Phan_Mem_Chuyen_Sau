@@ -86,6 +86,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         toolbarHeight: 50,
         title: const Text('Xác nhận thông tin'),
         titleTextStyle: const TextStyle(fontSize: 16),
@@ -214,7 +215,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
                               ),
                             ],
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     const SizedBox(
                       width: 5,
                     ),
@@ -815,6 +816,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
                                                     }),
                                                   );
                                                 }
+                                                return null;
                                               },
                                             ),
                                           )
@@ -950,7 +952,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: (widget.isEdit) ? 70 : 150,
+        height: (widget.isEdit) ? 80 : 160,
         padding: const EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 15,
@@ -979,7 +981,7 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
                       textAlign: TextAlign.center,
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             (!widget.isEdit)
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -1004,12 +1006,12 @@ class _RegisterCallStep2 extends State<RegisterCallStep2> {
                       ],
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             (!widget.isEdit)
                 ? const SizedBox(
                     height: 8,
                   )
-                : SizedBox(),
+                : const SizedBox(),
             GestureDetector(
               onTap: () {
                 if (widget.isEdit) {
