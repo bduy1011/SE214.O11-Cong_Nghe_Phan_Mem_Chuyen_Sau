@@ -1,3 +1,6 @@
+import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/admin_screens/doctor_profile_add.dart';
+import 'package:assist_health/ui/admin_screens/doctor_profile_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +17,9 @@ class _AdminNavBarState extends State<AdminNavBar> {
     // Screen 1
     Container(),
     // Screen 2
-    Container(),
+    const AddDoctorScreen(),
     // Screen 3
-    Container(),
+    DoctorProfileList(),
     // Screen 4
     Container(),
   ];
@@ -31,7 +34,7 @@ class _AdminNavBarState extends State<AdminNavBar> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF7165D6),
+          selectedItemColor: Themes.selectedClr,
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,

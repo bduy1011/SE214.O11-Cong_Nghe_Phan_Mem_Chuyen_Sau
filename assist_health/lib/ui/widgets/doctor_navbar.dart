@@ -1,4 +1,6 @@
-import 'package:assist_health/ui/doctor_ui/set_schedule.dart';
+import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/doctor_screens/set_schedule.dart';
+import 'package:assist_health/ui/user_screens/message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +15,11 @@ class _DoctorNavBarState extends State<DoctorNavBar> {
   int _selectedIndex = 0;
   final _screens = [
     // Screen 1
-    const SetScheduleScreen(),
+    Container(),
     // Screen 2
-    Container(),
+    const MessageScreen(),
     // Screen 3
-    Container(),
+    const SetScheduleScreen(),
     // Screen 4
     Container(),
   ];
@@ -32,7 +34,7 @@ class _DoctorNavBarState extends State<DoctorNavBar> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF7165D6),
+          selectedItemColor: Themes.selectedClr,
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,

@@ -4,7 +4,10 @@ class Question {
   final int age;
   final String title;
   final String content;
-  List<String> answers; // Trường mới
+  final List<String> categories;
+  int likes; // Added this line
+  int answerCount;
+  List<String> answers;
 
   Question({
     required this.id,
@@ -12,6 +15,10 @@ class Question {
     required this.age,
     required this.title,
     required this.content,
-    this.answers = const [], // Giá trị mặc định là danh sách rỗng
+    this.answers = const [],
+    required this.categories, 
+    required this.answerCount,
+    this.likes = 0, // Added this line with a default value of 0
+
   });
 }
