@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:assist_health/models/doctor/doctor_info.dart';
@@ -61,6 +63,7 @@ class _FavoriteDoctorListState extends State<FavoriteDoctorList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: const Text(
           'Danh sách bác sĩ quan tâm',
           style: TextStyle(fontSize: 18),
@@ -112,7 +115,7 @@ class _FavoriteDoctorListState extends State<FavoriteDoctorList> {
             return indexA.compareTo(indexB);
           });
 
-          // Xử lý kh không tìm ra kết quả
+          // Xử lý không tìm ra kết quả
           if (filterDoctorFavorite.isEmpty) {
             return SingleChildScrollView(
               child: Container(
@@ -185,7 +188,7 @@ class _FavoriteDoctorListState extends State<FavoriteDoctorList> {
                             Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                       top: 10, left: 20, bottom: 10),
                                   margin: const EdgeInsets.only(
                                     right: 10,
@@ -330,9 +333,9 @@ class _FavoriteDoctorListState extends State<FavoriteDoctorList> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   alignment: Alignment.center,
-                  child: Text(
+                  child: const Text(
                     'Xóa khỏi danh sách',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),

@@ -11,14 +11,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+class DoctorAccountScreen extends StatefulWidget {
+  const DoctorAccountScreen({super.key});
 
   @override
-  State<AccountScreen> createState() => _AccountScreenState();
+  State<DoctorAccountScreen> createState() => _DoctorAccountScreenState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
   UserProfile? userProfile;
   bool isLoading = false;
 
@@ -38,8 +38,6 @@ class _AccountScreenState extends State<AccountScreen> {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
-        .collection('health_profiles')
-        .doc('main_profile')
         .get();
 
     if (snapshot.exists) {
@@ -92,16 +90,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            HealthProfileDetailScreen(
-                                                profile: userProfile!)))
-                                .then((value) => getUserData());
-                          },
+                        GestureDetector(           
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -142,7 +131,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 userProfile!.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 15,
+                                  fontSize: 20,
                                 ),
                               ),
                               subtitle: Container(
@@ -157,125 +146,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 50,
-                                margin: const EdgeInsets.only(
-                                  left: 8,
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const HealthProfileListScreen()),
-                                    );
-                                  },
-                                  leading: const Icon(
-                                    CupertinoIcons.folder_solid,
-                                    color: Colors.blue,
-                                    size: 28,
-                                  ),
-                                  title: const Text(
-                                    "Hồ sơ sức khỏe",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                height: 10,
-                                indent: 15,
-                                endIndent: 15,
-                                color: Colors.grey.shade100,
-                              ),
-                              Container(
-                                height: 50,
-                                margin: const EdgeInsets.only(
-                                  left: 8,
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FavoriteDoctorList(),
-                                      ),
-                                    );
-                                  },
-                                  leading: const Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                    size: 30,
-                                  ),
-                                  title: const Text(
-                                    "Danh sách quan tâm",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                height: 10,
-                                indent: 15,
-                                endIndent: 15,
-                                color: Colors.grey.shade100,
-                              ),
-                              Container(
-                                height: 50,
-                                margin: const EdgeInsets.only(
-                                  left: 8,
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HealthMetricsTopNavBar()));
-                                  },
-                                  leading: const Icon(
-                                    Icons.add_chart,
-                                    color: Colors.indigo,
-                                    size: 30,
-                                  ),
-                                  title: const Text(
-                                    "Chỉ số sức khỏe",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
+                        
+                        const SizedBox(height: 20),
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           decoration: BoxDecoration(
@@ -300,7 +172,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Điều khoản và dịch vụ",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                   trailing: const Icon(
@@ -310,7 +182,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                               ),
                               Divider(
-                                height: 10,
+                                height: 30,
                                 indent: 15,
                                 endIndent: 15,
                                 color: Colors.grey.shade100,
@@ -331,13 +203,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Tham gia cộng đồng",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
                               ),
                               Divider(
-                                height: 10,
+                                height: 30,
                                 indent: 15,
                                 endIndent: 15,
                                 color: Colors.grey.shade100,
@@ -358,13 +230,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Chia sẽ ứng dụng",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
                               ),
                               Divider(
-                                height: 10,
+                                height: 30,
                                 indent: 15,
                                 endIndent: 15,
                                 color: Colors.grey.shade100,
@@ -385,13 +257,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Liên hệ và hỗ trợ",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
                               ),
                               Divider(
-                                height: 10,
+                                height: 30,
                                 indent: 15,
                                 endIndent: 15,
                                 color: Colors.grey.shade100,
@@ -412,7 +284,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Cài đặt",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                   trailing: const Icon(
@@ -422,7 +294,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                               ),
                               Divider(
-                                height: 10,
+                                height: 30,
                                 indent: 15,
                                 endIndent: 15,
                                 color: Colors.grey.shade100,
@@ -445,7 +317,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     "Đăng xuất",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),

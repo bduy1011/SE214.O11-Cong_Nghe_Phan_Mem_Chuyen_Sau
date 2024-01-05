@@ -46,7 +46,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _appointmentScheduleController!.close();
     super.dispose();
   }
 
@@ -135,6 +134,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       child: Scaffold(
         backgroundColor: Colors.blueAccent.withOpacity(0.1),
         appBar: AppBar(
+          foregroundColor: Colors.white,
           toolbarHeight: 80,
           title: Column(
             children: [
@@ -158,7 +158,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   controller: _searchController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(4),
+                    contentPadding: const EdgeInsets.all(10),
                     hintText: 'Tên bác sĩ, bệnh nhân, mã phiếu khám',
                     hintStyle: const TextStyle(
                       color: Colors.white70,

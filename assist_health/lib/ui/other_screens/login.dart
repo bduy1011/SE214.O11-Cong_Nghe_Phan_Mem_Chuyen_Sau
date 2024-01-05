@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:assist_health/others/theme.dart';
+import 'package:assist_health/ui/other_screens/welcome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:assist_health/ui/widgets/user_navbar.dart';
 import 'package:assist_health/ui/widgets/doctor_navbar.dart';
 import 'package:assist_health/ui/widgets/admin_navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -31,51 +33,63 @@ class _LoginScreenState extends State<LoginScreen> {
       await documentReference.update({'status': 'offline'});
     }
   }
+
   void resetPassword(String email) async {
-  try {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    // Thành công: Hiển thị thông báo cho người dùng rằng email đã được gửi thành công
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Thành công"),
-          content: const Text("Một liên kết đặt lại mật khẩu đã được gửi đến email của bạn."),
-          actions: [
-            TextButton(
-              child: const Text("Đóng"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  } catch (error) {
-    // Xử lý lỗi: Hiển thị thông báo lỗi cho người dùng
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Lỗi"),
-          content: Text("Đã xảy ra lỗi: $error"),
-          actions: [
-            TextButton(
-              child: const Text("Đóng"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      // Thành công: Hiển thị thông báo cho người dùng rằng email đã được gửi thành công
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Thành công"),
+            content: const Text(
+                "Một liên kết đặt lại mật khẩu đã được gửi đến email của bạn."),
+            actions: [
+              TextButton(
+                child: const Text("Đóng"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } catch (error) {
+      // Xử lý lỗi: Hiển thị thông báo lỗi cho người dùng
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Lỗi"),
+            content: Text("Đã xảy ra lỗi: $error"),
+            actions: [
+              TextButton(
+                child: const Text("Đóng"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
-    return Material(
+      return WillPopScope(
+      onWillPop: () async {
+        // Navigate back to the WelcomeScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => WelcomeScreen()),
+      );
+      return true;
+      },
+    child: Material(
       color: Themes.backgroundClr,
       child: SingleChildScrollView(
         child: SafeArea(
@@ -175,13 +189,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             break;
                         }
                         await documentReference.update({'status': 'online'});
- 
                       });
                     } else {
                       print("Please fill");
                     }
                   },
-                  
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     width: double.infinity,
@@ -209,7 +221,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -263,15 +274,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
-   @override
+
+  @override
   void dispose() {
     // Call setOffline when the widget is disposed (e.g., when user logs out or closes the app)
     setOffline();
