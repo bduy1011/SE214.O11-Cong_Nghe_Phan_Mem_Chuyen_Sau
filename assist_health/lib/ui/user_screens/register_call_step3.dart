@@ -11,6 +11,7 @@ import 'package:assist_health/others/methods.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/user_screens/register_call_step4.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -112,7 +113,6 @@ class _RegisterCallStep3 extends State<RegisterCallStep3> {
         Scaffold(
           backgroundColor: Themes.backgroundClr,
           appBar: AppBar(
-            foregroundColor: Colors.white,
             toolbarHeight: 50,
             title: const Text('Thanh toán bằng QR Code'),
             titleTextStyle: const TextStyle(fontSize: 16),
@@ -533,7 +533,7 @@ class _RegisterCallStep3 extends State<RegisterCallStep3> {
             ),
           ),
           bottomNavigationBar: Container(
-            height: 110,
+            height: 100,
             padding: const EdgeInsets.symmetric(
               vertical: 8,
               horizontal: 10,

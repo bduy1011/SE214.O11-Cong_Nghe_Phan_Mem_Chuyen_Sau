@@ -136,11 +136,7 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Chi tiêt lịch khám',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Chi tiêt lịch khám'),
         elevation: 0,
         centerTitle: true,
         flexibleSpace: Container(
@@ -1794,7 +1790,6 @@ class _ScheduleDetailState extends State<ScheduleDetail> {
   Future<void> onJoin() async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-    // ignore: use_build_context_synchronously
     await Navigator.push(
       context,
       MaterialPageRoute(

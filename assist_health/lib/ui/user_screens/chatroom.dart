@@ -52,8 +52,10 @@ class _ChatRoomState extends State<ChatRoom> {
         "time": FieldValue.serverTimestamp(),
       });
 
-      var ref =
-          FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('images')
+          .child("$fileName.jpg");
 
       // ignore: body_might_complete_normally_catch_error
       var uploadTask = await ref.putFile(imageFile).catchError((error) async {
@@ -108,7 +110,7 @@ class _ChatRoomState extends State<ChatRoom> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
               begin: Alignment.centerLeft,
@@ -116,7 +118,6 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ),
         ),
-        foregroundColor: Colors.white,
         title: StreamBuilder<DocumentSnapshot>(
           stream: _firestore
               .collection("users")
@@ -125,17 +126,14 @@ class _ChatRoomState extends State<ChatRoom> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var userData = snapshot.data!.data() as Map<String, dynamic>;
-              String name = widget.userMap['name'];
+              String name=widget.userMap['name'];
               if (userData['role'] == 'admin') {
-                name = 'Chăm Sóc Khách Hàng';
-              }
+                  name = 'Chăm Sóc Khách Hàng'; // Set your fixed admin name here
+               }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    (name != 'Chăm Sóc Khách Hàng') ? 'Bác sĩ $name' : name,
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  Text(name),
                   Text(
                     userData['status'],
                     style: const TextStyle(fontSize: 14),
@@ -151,13 +149,8 @@ class _ChatRoomState extends State<ChatRoom> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: MediaQuery.of(context).viewInsets.bottom > 0
-                  ? size.height -
-                      MediaQuery.of(context).viewInsets.bottom -
-                      -65 -
-                      210
-                  : size.height / 1.2,
+            SizedBox(
+              height: size.height / 1.25,
               width: size.width,
               child: StreamBuilder<QuerySnapshot>(
                 stream: _firestore
@@ -183,37 +176,39 @@ class _ChatRoomState extends State<ChatRoom> {
                 },
               ),
             ),
-          ],
-        ),
+           Container(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25)),
       ),
-      bottomNavigationBar: Container(
-        height: 65,
-        margin:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-        ),
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: getImages,
-              icon: const Icon(Icons.image),
-              color: Colors.blue,
-            ),
-            Expanded(
-              child: TextField(
-                controller: _message,
-                decoration: const InputDecoration(
-                  hintText: 'Nhắn tin',
-                  border: InputBorder.none,
-                ),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: getImages,
+            icon: const Icon(Icons.image),
+            color: Colors.blue,
+          ),
+                  Expanded(
+                    child: TextField(
+                      controller: _message,
+                      decoration: const InputDecoration(
+                        hintText: 'Type a message...',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: onSendMessage,
+                    icon: const Icon(Icons.send),
+                    color: Colors.blue,
+                  ),
+                ],
               ),
-            ),
-            IconButton(
-              onPressed: onSendMessage,
-              icon: const Icon(Icons.send),
-              color: Colors.blue,
             ),
           ],
         ),
@@ -230,11 +225,6 @@ class _ChatRoomState extends State<ChatRoom> {
             alignment:
                 isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width < 300
-                    ? MediaQuery.of(context).size.width
-                    : 300,
-              ),
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
               margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               decoration: BoxDecoration(

@@ -1,6 +1,3 @@
-// ignore_for_file: avoid_print
-
-import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/admin_screens/doctor_profile_add.dart';
 import 'package:assist_health/ui/admin_screens/doctor_profile_detail.dart';
 import 'package:assist_health/ui/admin_screens/doctor_profile_update.dart';
@@ -9,27 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DoctorProfileList extends StatelessWidget {
-  const DoctorProfileList({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text('Danh sách Bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
-        centerTitle: true,
-         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),   
+        title: Text('Danh sách Bác sĩ'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -47,7 +28,7 @@ class DoctorProfileList extends StatelessWidget {
               },
             );
           } else {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -57,10 +38,10 @@ class DoctorProfileList extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddDoctorScreen()),
+            MaterialPageRoute(builder: (context) => AddDoctorScreen()),
           );
         },
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -83,7 +64,7 @@ class DoctorProfileList extends StatelessWidget {
         Chip(
             label: Text(
           specialty,
-          style: const TextStyle(fontSize: 12.0),
+          style: TextStyle(fontSize: 12.0),
         )),
       );
     }
@@ -97,9 +78,9 @@ class DoctorProfileList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8.0),
-            const Text('Chuyên ngành:'),
+            Text('Chuyên ngành:'),
             const SizedBox(height: 8.0),
-            SizedBox(
+            Container(
               height: 40.0,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -112,13 +93,13 @@ class DoctorProfileList extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: const Icon(Icons.edit),
+              icon: Icon(Icons.edit),
               onPressed: () {
                 _navigateToUpdatePage(context, doctor);
               },
             ),
             IconButton(
-              icon: const Icon(Icons.delete),
+              icon: Icon(Icons.delete),
               onPressed: () {
                 _showDeleteConfirmationDialog(context, doctor.id, data?['uid']);
               },
@@ -143,7 +124,7 @@ class DoctorProfileList extends StatelessWidget {
     if (imageURL.isNotEmpty) {
       return NetworkImage(imageURL);
     } else {
-      return const AssetImage('assets/doctor1.jpg');
+      return AssetImage('assets/doctor1.jpg');
     }
   }
 
@@ -153,21 +134,21 @@ class DoctorProfileList extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Xác nhận xóa bác sĩ'),
-          content: const Text('Bạn có chắc chắn muốn xóa bác sĩ này?'),
+          title: Text('Xác nhận xóa bác sĩ'),
+          content: Text('Bạn có chắc chắn muốn xóa bác sĩ này?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Hủy'),
+              child: Text('Hủy'),
             ),
             TextButton(
               onPressed: () {
                 _deleteDoctor(doctorId, doctorUid);
                 Navigator.of(context).pop();
               },
-              child: const Text('Xóa'),
+              child: Text('Xóa'),
             ),
           ],
         );

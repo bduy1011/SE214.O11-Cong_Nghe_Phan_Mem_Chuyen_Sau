@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,10 +8,10 @@ import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/widgets/input_field.dart';
 
 class AddSchedulePage extends StatefulWidget {
-  const AddSchedulePage({super.key});
+  const AddSchedulePage({Key? key}) : super(key: key);
 
   @override
-  State<AddSchedulePage> createState() => _AddSchedulePageState();
+  _AddSchedulePageState createState() => _AddSchedulePageState();
 }
 
 class _AddSchedulePageState extends State<AddSchedulePage> {

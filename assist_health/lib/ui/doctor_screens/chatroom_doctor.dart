@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 
 import 'package:assist_health/others/theme.dart';
@@ -14,8 +12,7 @@ class ChatRoomDoctor extends StatefulWidget {
   final Map<String, dynamic> userMap;
   final String chatRoomId;
 
-  const ChatRoomDoctor(
-      {super.key, required this.chatRoomId, required this.userMap});
+  const ChatRoomDoctor({super.key, required this.chatRoomId, required this.userMap});
 
   @override
   State<ChatRoomDoctor> createState() => _ChatRoomDoctorState();
@@ -78,6 +75,8 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
           .collection('chats')
           .doc(fileName)
           .update({"message": imageUrl});
+
+      print(imageUrl);
     }
   }
 
@@ -108,7 +107,7 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
               begin: Alignment.centerLeft,
@@ -229,7 +228,7 @@ class _ChatRoomDoctorState extends State<ChatRoomDoctor> {
                 borderRadius: BorderRadius.circular(15),
                 color: isSentByMe
                     ? Colors.blue
-                    : const Color.fromARGB(
+                    : Color.fromARGB(
                         255, 231, 223, 223), // Customize the colors here
               ),
               child: Text(

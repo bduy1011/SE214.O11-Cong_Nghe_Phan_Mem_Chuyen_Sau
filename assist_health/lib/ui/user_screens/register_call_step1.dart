@@ -47,7 +47,6 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
   String? _uid;
   UserProfile? _userProfile;
   String? _idDoc;
-
   int _currentYear = DateTime.now().year;
   int _currentMonth = DateTime.now().month;
   DateTime _selectedDate = DateTime.now();
@@ -136,7 +135,6 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
         toolbarHeight: 50,
         title: const Text('Đặt lịch tư vấn'),
         titleTextStyle: const TextStyle(fontSize: 16),
@@ -438,7 +436,7 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
               ),
               Container(
                 width: double.infinity,
-                height: 195,
+                height: 180,
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 decoration: BoxDecoration(
                     color: Colors.blueGrey.withOpacity(0.1),
@@ -2366,9 +2364,13 @@ class _RegisterCallStep1 extends State<RegisterCallStep1> {
                   ],
                 );
               } else if (snapshot.hasError) {
-                return Text('Đã xảy ra lỗi: ${snapshot.error}');
+                return Container(
+                  child: Text('Đã xảy ra lỗi: ${snapshot.error}'),
+                );
               } else {
-                return const Text('Đang tải dữ liệu...');
+                return Container(
+                  child: const Text('Đang tải dữ liệu...'),
+                );
               }
             },
           );

@@ -31,7 +31,7 @@ class DoctorPopularCardWidget extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 115,
+            height: 110,
             width: 200,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -42,14 +42,14 @@ class DoctorPopularCardWidget extends StatelessWidget {
                   (BuildContext context, Object exception,
                       StackTrace? stackTrace) {
                 return Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       FontAwesomeIcons.userDoctor,
                       size: 90,
@@ -102,7 +102,7 @@ class DoctorPopularCardWidget extends StatelessWidget {
                       style: const TextStyle(
                           color: Colors.black, fontSize: 11, height: 1.5),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 10,
                     ),
                     Icon(
@@ -140,10 +140,10 @@ class DoctorPopularCardWidget extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(
+            margin: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.lightBlueAccent.shade100.withOpacity(0.3),
               borderRadius: BorderRadius.circular(5),
@@ -159,28 +159,28 @@ class DoctorPopularCardWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis),
             ),
           ),
-          const SizedBox(
+          SizedBox(
             height: 10,
           ),
           Container(
-            margin: const EdgeInsets.symmetric(
+            margin: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
               borderRadius: BorderRadius.circular(3),
             ),
-            child: const Text(
+            child: Text(
               'Tư vấn trực tuyến',
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,

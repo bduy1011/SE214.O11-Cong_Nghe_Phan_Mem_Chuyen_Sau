@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 
 import 'package:assist_health/others/theme.dart';
@@ -40,9 +38,10 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
     "Hô hấp",
     "Huyết học",
     "Nội tiết",
+
   ];
-  final List<Experience> _experiences = [Experience()];
-  final List<Education> _educations = [Education()];
+  List<Experience> _experiences = [Experience()];
+  List<Education> _educations = [Education()];
 
   @override
   void initState() {
@@ -70,11 +69,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text('Thêm Bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
-        centerTitle: true,
+        title: const Text('Thêm Bác sĩ'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -130,11 +125,11 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _nameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Họ tên bác sĩ',
                   border: OutlineInputBorder(),
                 ),
-                inputFormatters: [
+                  inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
                 ],
               ),
@@ -156,7 +151,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
@@ -164,7 +159,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Mô tả',
                   border: OutlineInputBorder(),
                 ),
@@ -172,7 +167,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _workplaceController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Nơi công tác',
                   border: OutlineInputBorder(),
                 ),
@@ -184,7 +179,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _experiencetextController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Kinh nghiệm làm việc',
                   border: OutlineInputBorder(),
                 ),
@@ -198,7 +193,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _studytextController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Học vấn',
                   border: OutlineInputBorder(),
                 ),
@@ -223,7 +218,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Kinh nghiệm làm việc'),
+        Text('Kinh nghiệm làm việc'),
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,7 +233,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                   });
                 },
                 items: _generateYearItems(),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Bắt đầu',
                   border: OutlineInputBorder(),
                 ),
@@ -256,7 +251,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                   });
                 },
                 items: _generateYearItems(),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Kết thúc',
                   border: OutlineInputBorder(),
                 ),
@@ -270,7 +265,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
             Expanded(
               child: TextField(
                 controller: _experiences[index].workplaceController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Nơi làm việc',
                   border: OutlineInputBorder(),
                 ),
@@ -280,7 +275,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               onPressed: () {
                 _addExperienceDescription(index);
               },
-              icon: const Icon(Icons.send),
+              icon: Icon(Icons.send),
             ),
           ],
         ),
@@ -292,7 +287,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Học vấn'),
+        Text('Học vấn'),
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,7 +302,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                   });
                 },
                 items: _generateYearItems(),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Bắt đầu',
                   border: OutlineInputBorder(),
                 ),
@@ -325,7 +320,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                   });
                 },
                 items: _generateYearItems(),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Kết thúc',
                   border: OutlineInputBorder(),
                 ),
@@ -339,7 +334,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
             Expanded(
               child: TextField(
                 controller: _educations[index].schoolController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Trường học',
                   border: OutlineInputBorder(),
                 ),
@@ -349,7 +344,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
               onPressed: () {
                 _addEducationDescription(index);
               },
-              icon: const Icon(Icons.send),
+              icon: Icon(Icons.send),
             ),
           ],
         ),
@@ -419,13 +414,12 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
 
   void _saveDataToFirestore() async {
     try {
-      String uid = const Uuid().v4();
+      String uid = Uuid().v4();
       String name = _nameController.text.trim();
       String email = _emailController.text.trim();
       String description = _descriptionController.text.trim();
       String workplace = _workplaceController.text.trim();
-      String experienceText = _experiencetextController.text.trim();
-      String studyTexT= _studytextController.text.trim();
+
       // Validate that all required fields are filled
       if (name.isEmpty ||
           email.isEmpty ||
@@ -435,23 +429,19 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
         _showErrorSnackBar('Please fill in all fields and select an image.');
         return;
       }
-      if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-          .hasMatch(email)) {
-        _showErrorSnackBar('Please enter a valid email address.');
-        return;
-      }
-      if (_experiences.any((experience) =>
-          experience.startYear.compareTo(experience.endYear) > 0)) {
-        _showErrorSnackBar(
-            'Start year must be before end year for experiences.');
-        return;
-      }
-      if (_educations.any((education) =>
-          education.startYear.compareTo(education.endYear) > 0)) {
-        _showErrorSnackBar(
-            'Start year must be before end year for educations.');
-        return;
-      }
+        if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(email)) {
+      _showErrorSnackBar('Please enter a valid email address.');
+      return;
+    }
+       if (_experiences.any((experience) => experience.startYear.compareTo(experience.endYear) > 0)) {
+      _showErrorSnackBar('Start year must be before end year for experiences.');
+      return;
+    }
+     if (_educations.any((education) => education.startYear.compareTo(education.endYear) > 0)) {
+      _showErrorSnackBar('Start year must be before end year for educations.');
+      return;
+    }
+
 
       // Access Firestore instance
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -476,7 +466,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
 
       // Create a new document in the 'users' collection with the generated UID
       DocumentReference doctorRef =
-          firestore.collection('users').doc(userCredential.user!.uid);
+          await firestore.collection('users').doc(userCredential.user!.uid);
       String? downloadURL;
       if (_selectedImage != null) {
         downloadURL = await _uploadImageToFirebase(_selectedImage!, uid);
@@ -491,8 +481,6 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
         'role': 'doctor',
         'description': _descriptionController.text,
         'workplace': _workplaceController.text,
-        'experienceText':_experiencetextController.text,
-        'studyText':_studytextController.text,
         'experiences': _experiences
             .map((experience) => experience.timelineDescriptions)
             .expand((descriptions) => descriptions)
@@ -502,11 +490,10 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
             .expand((descriptions) => descriptions)
             .toList(),
         'imageURL': downloadURL,
-        'status': 'offline',
+        'status':'offline',
       });
 
       _showSuccessSnackBar('Doctor information saved successfully!');
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } catch (e) {
       print('Error saving data to Firestore: $e');

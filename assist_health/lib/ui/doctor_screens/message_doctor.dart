@@ -5,14 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageDoctorScreen extends StatefulWidget {
-  const MessageDoctorScreen({super.key});
+  const MessageDoctorScreen({Key? key}) : super(key: key);
 
   @override
   State<MessageDoctorScreen> createState() => _MessageDoctorScreenState();
 }
 
-class _MessageDoctorScreenState extends State<MessageDoctorScreen>
-    with WidgetsBindingObserver {
+class _MessageDoctorScreenState extends State<MessageDoctorScreen> with WidgetsBindingObserver {
   List<Map<String, dynamic>> userList = [];
   List<Map<String, dynamic>> adminList = [];
   bool isLoading = false;
@@ -58,18 +57,20 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
   }
 
   String chatRoomId(String user1, String user2) {
-    return user1[0].toLowerCase().codeUnits[0] >
-            user2[0].toLowerCase().codeUnits[0]
+    return user1[0].toLowerCase().codeUnits[0] > user2[0].toLowerCase().codeUnits[0]
         ? "$user1$user2"
         : "$user2$user1";
   }
+ 
+
+
 
   void onSearch() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     setState(() {
       isLoading = true;
-      userList = [];
+      userList=[];
     });
 
     String searchText = _search.text.trim().toLowerCase();
@@ -108,27 +109,28 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
         .where("role", whereIn: ["user", "admin"])
         .get()
         .then((value) {
-          if (value.docs.isNotEmpty) {
-            setState(() {
-              userList = value.docs
-                  .where((doc) => doc['role'] == 'user')
-                  .map((doc) => doc.data())
-                  .toList();
-              adminList = value.docs
-                  .where((doc) => doc['role'] == 'admin')
-                  .map((doc) => doc.data())
-                  .toList();
-              isLoading = false;
-            });
-          } else {
-            setState(() {
-              userList = [];
-              adminList = [];
-              isLoading = false;
-            });
-          }
+      if (value.docs.isNotEmpty) {
+        setState(() {
+          userList = value.docs
+              .where((doc) => doc['role'] == 'user')
+              .map((doc) => doc.data())
+              .toList();
+          adminList = value.docs
+              .where((doc) => doc['role'] == 'admin')
+              .map((doc) => doc.data())
+              .toList();
+          isLoading = false;
         });
+      } else {
+        setState(() {
+          userList = [];
+          adminList = [];
+          isLoading = false;
+        });
+      }
+    });
   }
+
 
   Color getStatusDotColor(bool isOnline) {
     return isOnline ? Colors.green : Colors.red;
@@ -194,10 +196,12 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
                   SizedBox(
                     height: size.height / 60,
                   ),
+                  
                   if (adminList.isNotEmpty)
                     Container(
                       child: Column(
                         children: [
+                       
                           ListView.builder(
                             shrinkWrap: true,
                             itemCount: adminList.length,
@@ -231,8 +235,7 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
                                       ],
                                     ),
                                     title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Chăm Sóc Khách Hàng',
@@ -265,27 +268,27 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
                             },
                           ),
                           Divider(
-                            color: Colors.grey,
-                            thickness: 5.0,
-                          ),
+                                      color: Colors.grey,
+                                      thickness: 5.0,
+                                    ),
                         ],
                       ),
                     ),
+
                   if (userList.isNotEmpty)
                     Container(
                       child: Column(
                         children: [
                           Text(
                             'Danh sách bác sĩ',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Container(
-                            width: 200.0,
+                            width: 200.0,  
                             child: Divider(
-                              color: const Color.fromARGB(255, 179, 35, 35),
-                              thickness: 3.0,
-                            ),
+                            color: const Color.fromARGB(255, 179, 35, 35),
+                            thickness: 3.0,
+                                ),
                           ),
                           ListView.builder(
                             shrinkWrap: true,
@@ -342,13 +345,13 @@ class _MessageDoctorScreenState extends State<MessageDoctorScreen>
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    trailing: const Icon(Icons.chat,
-                                        color: Colors.black),
+                                    trailing: const Icon(Icons.chat, color: Colors.black),
                                   ),
                                   if (index < userList.length - 1)
                                     Divider(
                                       color: Colors.grey,
                                       thickness: 1.0,
+                                      
                                     ),
                                 ],
                               );

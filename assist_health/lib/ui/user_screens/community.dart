@@ -30,12 +30,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
     "Hô hấp",
     "Huyết học",
     "Nội tiết",
-  ];
+];
 
   final List<Question> questions = [];
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  void _showSnackBar(String message) {
+    void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -50,7 +50,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       _showSnackBar('Please fill in both title and content fields.');
       return false;
     }
-    if (selectedCategories.isEmpty) {
+     if (selectedCategories.isEmpty) {
       _showSnackBar('Please choose at least one category.');
       return false;
     }
@@ -58,90 +58,80 @@ class _CommunityScreenState extends State<CommunityScreen> {
     return true;
   }
 
-  Future<void> _showCategoryDialog() async {
-    List<String> selectedCategoriesCopy = List.from(selectedCategories);
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'Chọn chủ đề',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: SizedBox(
-            height: 400,
-            width: 400,
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: categories.map((category) {
-                      final isSelected =
-                          selectedCategoriesCopy.contains(category);
-                      return CheckboxListTile(
-                        title: Row(
-                          children: [
-                            SizedBox(width: 160, child: Text(category)),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            if (isSelected) const Icon(Icons.check),
-                          ],
-                        ),
-                        value: isSelected,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            if (value != null) {
-                              if (value) {
-                                selectedCategoriesCopy.add(category);
-                              } else {
-                                selectedCategoriesCopy.remove(category);
-                              }
+  Future<void> _showCategoryDialog() async {
+  List<String> selectedCategoriesCopy = List.from(selectedCategories);
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Chọn chủ đề'),
+        content: Container(
+          height: 300,
+          width: 400, // Set the height as per your requirement
+          child: SingleChildScrollView(
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: categories.map((category) {
+                    final isSelected = selectedCategoriesCopy.contains(category);
+                    return CheckboxListTile(
+                      title: Row(
+                        children: [
+                          Text(category),
+                          // if (isSelected) const Icon(Icons.check),
+                        ],
+                      ),
+                      value: isSelected,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value != null) {
+                            if (value) {
+                              selectedCategoriesCopy.add(category);
+                            } else {
+                              selectedCategoriesCopy.remove(category);
                             }
-                          });
-                        },
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                );
+              },
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Hủy'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  selectedCategories.clear();
-                  selectedCategories.addAll(selectedCategoriesCopy);
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('Xác nhận'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Hủy'),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                selectedCategories.clear();
+                selectedCategories.addAll(selectedCategoriesCopy);
+              });
+              Navigator.of(context).pop();
+            },
+            child: const Text('Xác nhận'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
         title: const Text('Đặt câu hỏi'),
         centerTitle: true,
         flexibleSpace: Container(
@@ -165,12 +155,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Giới tính:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   _genderToggleGender(),
                 ],
@@ -183,8 +174,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Tuổi:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   Expanded(
@@ -213,42 +205,35 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Chủ đề:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: _showCategoryDialog,
-                    child: Text(
-                      'Chọn chủ đề',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Themes.gradientLightClr, // Đặt màu nền là màu đỏ
-                      onPrimary: Colors.white, // Đặt màu chữ là màu trắng
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Wrap(
                     children: selectedCategories.map((category) {
-                      return Container(
-                        margin: EdgeInsets.only(right: 5),
-                        child: Chip(
-                          label: Text(category),
-                          onDeleted: () {
-                            setState(() {
-                              selectedCategories.remove(category);
-                            });
-                          },
-                        ),
+                      return Chip(
+                        label: Text(category),
+                        onDeleted: () {
+                          setState(() {
+                            selectedCategories.remove(category);
+                          });
+                        },
                       );
                     }).toList(),
                   ),
+                  const SizedBox(height: 5),
+                  ElevatedButton(
+                    onPressed: _showCategoryDialog,
+                    child: const Text(
+                      'Chọn chủ đề',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+
                 ],
               ),
             ),
@@ -265,8 +250,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Tiêu đề:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
@@ -296,8 +282,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   const Text(
                     'Nội dung:',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
@@ -309,7 +296,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       border: OutlineInputBorder(),
                       hintText: "Nhập nội dung...",
                     ),
-                    maxLines: 5,
+                    maxLines: 10,
                   ),
                 ],
               ),
@@ -317,6 +304,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             const SizedBox(
               height: 30,
             ),
+            
             ActionChip(
               onPressed: () async {
                 if (!_validateFields()) {
@@ -337,28 +325,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     title: titleController.text,
                     content: contentController.text,
                     categories: selectedCategories,
-                    questionUserId: currentUserId,
-                    date: DateTime.now(),
+                    questionUserId: currentUserId, 
+
                   );
 
-                  await FirebaseFirestore.instance
-                      .collection('questions')
-                      .doc(id)
-                      .set({
+                  await FirebaseFirestore.instance.collection('questions').doc(id).set({
                     'gender': question.gender,
                     'age': question.age,
                     'title': question.title,
                     'content': question.content,
                     'categories': FieldValue.arrayUnion(question.categories),
-                    'questionUserId': currentUserId,
-                    'date': question.date!,
+                    'questionUserId':currentUserId,
                   });
 
-                  // ignore: use_build_context_synchronously
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (_) => const PublicQuestionsScreen()),
+                    MaterialPageRoute(builder: (_) => const PublicQuestionsScreen()),
                   );
 
                   setState(() {
@@ -373,7 +355,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 Icons.send,
                 color: Colors.white,
               ),
-              backgroundColor: Themes.gradientDeepClr,
+              backgroundColor: Themes.buttonClr,
               label: const Text(
                 'Gửi',
                 style: TextStyle(
@@ -381,10 +363,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   fontSize: 18,
                 ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            SizedBox(
-              height: 20,
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
             ),
           ],
         ),
@@ -497,7 +476,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         value: age.toDouble(),
         min: 0,
         max: 100,
-        activeColor: Themes.gradientLightClr,
+        activeColor: Themes.selectedClr,
         divisions: 100,
         label: '${age.round().toString()} tuổi',
         onChanged: (newValue) {

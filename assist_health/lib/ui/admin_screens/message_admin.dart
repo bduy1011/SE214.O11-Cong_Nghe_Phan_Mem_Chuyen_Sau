@@ -1,3 +1,4 @@
+import 'package:assist_health/models/doctor/doctor_info.dart';
 import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/user_screens/chatroom.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,8 +12,7 @@ class MessageAdminScreen extends StatefulWidget {
   State<MessageAdminScreen> createState() => _MessageAdminScreenState();
 }
 
-class _MessageAdminScreenState extends State<MessageAdminScreen>
-    with WidgetsBindingObserver {
+class _MessageAdminScreenState extends State<MessageAdminScreen> with WidgetsBindingObserver {
   List<Map<String, dynamic>> userList = [];
   List<Map<String, dynamic>> doctorList = [];
   bool isLoading = false;
@@ -60,8 +60,7 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
   }
 
   String chatRoomId(String user1, String user2) {
-    return user1[0].toLowerCase().codeUnits[0] >
-            user2[0].toLowerCase().codeUnits[0]
+    return user1[0].toLowerCase().codeUnits[0] > user2[0].toLowerCase().codeUnits[0]
         ? "$user1$user2"
         : "$user2$user1";
   }
@@ -71,8 +70,8 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
 
     setState(() {
       isLoading = true;
-      doctorList = [];
-      userList = [];
+      doctorList=[];
+      userList=[];
     });
 
     String searchText = _search.text.trim().toLowerCase();
@@ -95,16 +94,16 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
         .then((value) {
       setState(() {
         if (showDoctors) {
-          doctorList = value.docs
-              .where((doc) => doc['name'].toLowerCase().contains(searchText))
-              .map((doc) => doc.data())
-              .toList();
-        } else {
-          userList = value.docs
-              .where((doc) => doc['name'].toLowerCase().contains(searchText))
-              .map((doc) => doc.data())
-              .toList();
-        }
+        doctorList = value.docs
+            .where((doc) => doc['name'].toLowerCase().contains(searchText))
+            .map((doc) => doc.data())
+            .toList();
+      } else {
+        userList = value.docs
+            .where((doc) => doc['name'].toLowerCase().contains(searchText))
+            .map((doc) => doc.data())
+            .toList();
+      }
         isLoading = false;
       });
     });
@@ -172,10 +171,7 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
 
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Themes.backgroundClr,
-        title: const Text('Hỏi đáp riêng cùng bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Hỏi đáp riêng cùng bác sĩ'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
@@ -306,8 +302,7 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.chat, color: Colors.black),
+                                trailing: const Icon(Icons.chat, color: Colors.black),
                               ),
                             );
                           },
@@ -355,8 +350,7 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.chat, color: Colors.black),
+                                trailing: const Icon(Icons.chat, color: Colors.black),
                               ),
                             );
                           },

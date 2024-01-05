@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 
 import 'package:assist_health/models/doctor/doctor_info.dart';
@@ -119,7 +117,7 @@ class AppointmentSchedule {
         'status': status,
         'statusReasonCanceled': statusReasonCanceled,
         'paymentStatus': paymentStatus,
-        'isExamined': isExamined ?? false,
+        'isExamined': isExamined,
       });
 
       print('Appointment updated in Firestore successfully.');
@@ -223,7 +221,7 @@ class AppointmentSchedule {
     });
   }
 
-  void updateAppointmentIsExaminated() {
+  void updateAppointmentIsExaminated(bool isExamined) {
     CollectionReference appointmentScheduleCollection =
         FirebaseFirestore.instance.collection('appointment_schedule');
 
@@ -251,5 +249,4 @@ class AppointmentSchedule {
       print('Error updating appointment feedback: $e');
     }
   }
-
 }

@@ -21,16 +21,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    phoneNumber = ModalRoute.of(context)!.settings.arguments as String;
-    _phone.text = phoneNumber;
-  }
-
   @override
   Widget build(BuildContext context) {
+    phoneNumber = ModalRoute.of(context)!.settings.arguments as String;
+    _phone.text = phoneNumber;
     return Material(
       color: Themes.backgroundClr,
       child: SingleChildScrollView(
@@ -51,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: TextField(
                   controller: _name,
                   decoration: const InputDecoration(
-                    labelText: "Họ và tên",
+                    labelText: "Full Name",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -63,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: TextField(
                   controller: _email,
                   decoration: const InputDecoration(
-                    labelText: "Email",
+                    labelText: "Email Address",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
@@ -75,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: TextField(
                   controller: _phone,
                   decoration: const InputDecoration(
-                    hintText: '0362300000',
+                    labelText: "Phone Number",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.phone),
                     enabled: false,
@@ -89,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
-                    label: const Text("Nhập mật khẩu"),
+                    label: const Text("Enter Password"),
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: () {
@@ -152,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Đăng ký",
+                      "Sign up",
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.white,

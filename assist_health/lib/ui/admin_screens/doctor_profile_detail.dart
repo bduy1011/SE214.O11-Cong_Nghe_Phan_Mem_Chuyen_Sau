@@ -1,4 +1,3 @@
-import 'package:assist_health/others/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,27 +10,14 @@ class DoctorProfileDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text('Thông tin Bác sĩ',
-         style: TextStyle(fontSize: 20),
-        ),
-        centerTitle: true,
-          flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),   
+        title: Text('Thông tin Bác sĩ'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future:
             FirebaseFirestore.instance.collection('users').doc(doctorUid).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -42,7 +28,7 @@ class DoctorProfileDetailScreen extends StatelessWidget {
             );
           }
           if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(
+            return Center(
               child: Text('No data found.'),
             );
           }
@@ -64,7 +50,7 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                   ),
                 const SizedBox(height: 16),
                 // Display other information with enhanced styling
-                const Text(
+                Text(
                   'Tên Bác sĩ:',
                   style: TextStyle(
                     fontSize: 18,
@@ -73,13 +59,13 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 ),
                 Text(
                   doctorData['name'],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     color: Colors.blue, // Customize the text color
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Mô tả:',
                   style: TextStyle(
                     fontSize: 18,
@@ -88,13 +74,13 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 ),
                 Text(
                   doctorData['description'],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Chuyên khoa:',
                   style: TextStyle(
                     fontSize: 18,
@@ -103,13 +89,13 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 ),
                 Text(
                   doctorData['specialty'].join(', '),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     color: Colors.green, // Customize the text color
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Nơi công tác:',
                   style: TextStyle(
                     fontSize: 18,
@@ -118,12 +104,12 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 ),
                 Text(
                   doctorData['workplace'],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Học vấn:',
                   style: TextStyle(
                     fontSize: 18,
@@ -133,10 +119,10 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 for (var education in doctorData['educations'])
                   Text(
                     '- $education',
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16),
                   ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Kinh nghiệm làm việc:',
                   style: TextStyle(
                     fontSize: 18,
@@ -146,7 +132,7 @@ class DoctorProfileDetailScreen extends StatelessWidget {
                 for (var experience in doctorData['experiences'])
                   Text(
                     '- $experience',
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16),
                   ),
               ],
             ),

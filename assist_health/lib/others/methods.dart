@@ -94,11 +94,11 @@ Stream<List<DoctorInfo>> getInfoDoctors() {
       .map((QuerySnapshot querySnapshot) {
     final List<DoctorInfo> doctorInfos = [];
 
-    for (var doctorDoc in querySnapshot.docs) {
+    querySnapshot.docs.forEach((doctorDoc) {
       final doctorData = doctorDoc.data() as Map<String, dynamic>?;
       final DoctorInfo doctorInfo = DoctorInfo.fromJson(doctorData!);
       doctorInfos.add(doctorInfo);
-    }
+    });
 
     return doctorInfos;
   });
@@ -212,7 +212,7 @@ Future<DoctorSchedule> getSchedulesDoctor(
 }
 
 Stream<List<UserProfile>> getProfileUsers(String uid) async* {
-  List<UserProfile> userProfiles = [];
+  List<UserProfile> doctorProfiles = [];
 
   final docSnapshot = await _firestore
       .collection('users')
@@ -230,27 +230,9 @@ Stream<List<UserProfile>> getProfileUsers(String uid) async* {
     }
   }).whereType<UserProfile>();
 
-  userProfiles.addAll(listOfProfiles);
+  doctorProfiles.addAll(listOfProfiles);
 
-  yield userProfiles.reversed.toList();
-}
-
-Stream<UserProfile> getMainProfileUsers(String uid) async* {
-  UserProfile userProfile = UserProfile('', '', '', '', '', '', '', '');
-
-  final docSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .collection('health_profiles')
-      .doc('main_profile')
-      .get();
-
-  if (docSnapshot.exists) {
-    final data = docSnapshot.data();
-    userProfile = UserProfile.fromJson(data!);
-  }
-
-  yield userProfile;
+  yield doctorProfiles.reversed.toList();
 }
 
 Future<List<UserHeight>> getHeightDataUser(String uid, String idDoc) async {
@@ -420,27 +402,6 @@ Stream<List<AppointmentSchedule>> getAppointmentSchdedules() {
 Stream<List<AppointmentSchedule>> getAllAppointmentSchdedules() {
   return _firestore
       .collection('appointment_schedule')
-      .snapshots()
-      .map((QuerySnapshot querySnapshot) {
-    final List<AppointmentSchedule> appointmentSchedules = [];
-
-    for (var appointmentScheduleDoc in querySnapshot.docs) {
-      final appointmentScheduleData =
-          appointmentScheduleDoc.data() as Map<String, dynamic>?;
-      final AppointmentSchedule appointmentSchedule =
-          AppointmentSchedule.fromJson(appointmentScheduleData!);
-      appointmentSchedules.add(appointmentSchedule);
-    }
-
-    return appointmentSchedules;
-  });
-}
-
-Stream<List<AppointmentSchedule>> getAppointmentSchedulesByDoctor(
-    String doctorId) {
-  return _firestore
-      .collection('appointment_schedule')
-      // .where('doctorid', isEqualTo: doctorId)
       .snapshots()
       .map((QuerySnapshot querySnapshot) {
     final List<AppointmentSchedule> appointmentSchedules = [];
