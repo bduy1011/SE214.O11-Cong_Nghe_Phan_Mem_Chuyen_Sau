@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:assist_health/models/other/appointment_schedule.dart';
 import 'package:assist_health/others/methods.dart';
-import 'package:assist_health/others/theme.dart';
 import 'package:assist_health/ui/admin_screens/doctor_list_revenue.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ class _RevenueChartScreenState extends State<RevenueChartScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Thống kê doanh thu hàng tháng'),
+          title: Text('Monthly Revenue Data'),
           content: Column(
             children: monthlyRevenue.entries
                 .map((entry) =>
@@ -51,7 +50,7 @@ class _RevenueChartScreenState extends State<RevenueChartScreen> {
                   MaterialPageRoute(builder: (context) => DoctorListRevenue()),
                 );
               },
-              child: Text('Danh mục bác sĩ'),
+              child: Text('Go to Doctor List'),
             ),
           ],
         );
@@ -79,20 +78,7 @@ class _RevenueChartScreenState extends State<RevenueChartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text('Sơ đồ doanh thu',
-        style: TextStyle(fontSize: 20),
-        ),
-         centerTitle: true,
-          flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ), 
+        title: Text('Sơ đồ doanh thu'),
       ),
       body: SingleChildScrollView(
         child: Container(

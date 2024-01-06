@@ -1,14 +1,10 @@
-import 'package:assist_health/models/doctor/doctor_info.dart';
 import 'package:assist_health/others/theme.dart';
-import 'package:assist_health/ui/doctor_screens/doctor_account.dart';
-import 'package:assist_health/ui/doctor_screens/doctor_chart.dart';
-import 'package:assist_health/ui/doctor_screens/doctor_info.dart';
-import 'package:assist_health/ui/doctor_screens/message_doctor.dart';
+import 'package:assist_health/ui/doctor_screens/advise_topbar.dart';
+import 'package:assist_health/ui/doctor_screens/home_doctor.dart';
 import 'package:assist_health/ui/doctor_screens/set_schedule.dart';
-import 'package:assist_health/ui/user_screens/home.dart';
-import 'package:assist_health/ui/user_screens/public_questions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DoctorNavBar extends StatefulWidget {
   const DoctorNavBar({super.key});
@@ -21,15 +17,15 @@ class _DoctorNavBarState extends State<DoctorNavBar> {
   int _selectedIndex = 0;
   final _screens = [
     // Screen 1
-    const PublicQuestionsScreen(),
+    const HomeDoctor(),
+    //const PublicQuestionsScreen(),
     // Screen 2
-    const MessageDoctorScreen(),
+    const SetScheduleScreen(),
     // Screen 3
-    const DoctorChartScreen(),
+    //const MessageDoctorScreen(),
+    const AdviseTopBar(),
     // Screen 4
-    DoctorInfoScreen(),
-    //Screen 5 
-    const DoctorAccountScreen(),
+    Container(),
   ];
 
   @override
@@ -57,22 +53,18 @@ class _DoctorNavBarState extends State<DoctorNavBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
-              label: "Home",
+              label: "Trang chủ",
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.chat_bubble_text_fill),
-              label: "Messages",
+              icon: Icon(CupertinoIcons.calendar),
+              label: "Lịch khám",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart_outlined),
-              label: "Thống kê",
-            ),
-              BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              label: "Thông tin",
+              icon: Icon(Icons.phone),
+              label: "Tư vấn",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: Icon(FontAwesomeIcons.userDoctor),
               label: "Tài khoản",
             ),
           ],

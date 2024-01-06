@@ -172,10 +172,7 @@ class _MessageAdminScreenState extends State<MessageAdminScreen>
 
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Themes.backgroundClr,
-        title: const Text('Hỏi đáp riêng cùng bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
+        title: const Text('Hỏi đáp riêng cùng bác sĩ'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(

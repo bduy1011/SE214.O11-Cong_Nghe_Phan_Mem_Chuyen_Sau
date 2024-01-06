@@ -63,8 +63,8 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
           _emailController.text = doctorSnapshot['email'];
           _descriptionController.text = doctorSnapshot['description'];
           _workplaceController.text = doctorSnapshot['workplace'];
-          _experiencetextController.text = doctorSnapshot['experienceText'];
-          _studytextController.text = doctorSnapshot['studyText'];
+          _experiencetextController.text = doctorSnapshot['experiencetext'];
+          _studytextController.text = doctorSnapshot['studytext'];
           _imageURL = doctorSnapshot['imageURL'];
           _selectedSpecialties =
               List<String>.from(doctorSnapshot['specialty'] ?? []);
@@ -85,7 +85,7 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
           _emailController.text.isEmpty ||
           _descriptionController.text.isEmpty ||
           _workplaceController.text.isEmpty) {
-        _showErrorSnackBar('Hãy điền đầy đủ tất cả thông tin');
+        _showErrorSnackBar('Please fill in all fields.');
         return;
       }
 
@@ -108,7 +108,7 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
         // Use the new URL if available, otherwise keep the old one
       });
 
-      _showSuccessSnackBar('Cập nhật thông tin bác sĩ thành công');
+      _showSuccessSnackBar('Doctor information updated successfully!');
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } catch (e) {
@@ -116,6 +116,7 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
       _showErrorSnackBar('Error updating data to Firestore');
     }
   }
+
   Future<String?> _uploadImageToFirebase(
       File imageFile, String doctorId) async {
     try {
@@ -151,22 +152,12 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Themes.backgroundClr,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text('Cập Nhật Thông Tin Bác Sĩ',
-        style: TextStyle(fontSize: 20),
+        title: const Text('Cập Nhật Thông Tin Bác Sĩ'),
+        backgroundColor: Themes.primaryColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        centerTitle: true,
-          flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),    
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -196,8 +187,7 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(60),
                                   child: Image.network(_imageURL!,
-                                      fit: BoxFit.cover,
-                                      ),
+                                      fit: BoxFit.cover),
                                 )
                               : const SizedBox.shrink(),
                     ),
@@ -212,7 +202,6 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -236,7 +225,6 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
                   });
                 },
                 title: const Text('Chuyên khoa'),
-                dialogHeight: 300,
               ),
 
               const SizedBox(height: 16),
@@ -263,7 +251,6 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
               TextField(
                 controller: _experiencetextController,
                 maxLines: 3,
@@ -281,7 +268,8 @@ class _UpdateDoctorScreenState extends State<UpdateDoctorScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-               const SizedBox(height: 16),
+
+              // Your other UI components here
               ElevatedButton(
                 onPressed: () {
                   _updateDataToFirestore();

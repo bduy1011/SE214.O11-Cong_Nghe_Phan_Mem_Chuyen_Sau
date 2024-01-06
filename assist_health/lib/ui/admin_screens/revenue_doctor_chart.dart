@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:assist_health/models/other/appointment_schedule.dart';
 import 'package:assist_health/others/methods.dart';
-import 'package:assist_health/others/theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +30,7 @@ class _DoctorRevenueChartScreenState extends State<DoctorRevenueChartScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Thống kê doanh thu hàng tháng'),
+          title: Text('Monthly Revenue Data'),
           content: Column(
             children: monthlyRevenue.entries
                 .map((entry) =>
@@ -71,20 +70,7 @@ class _DoctorRevenueChartScreenState extends State<DoctorRevenueChartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text('Đồ thị doanh thu bác sĩ',
-        style: TextStyle(fontSize: 20),
-        ),
-       centerTitle: true,
-          flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Themes.gradientDeepClr, Themes.gradientLightClr],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),    
+        title: Text('Doctor Revenue Chart'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -125,7 +111,7 @@ class _DoctorRevenueChartScreenState extends State<DoctorRevenueChartScreen> {
                           onPressed: () {
                             showDataDialog(monthlyRevenue);
                           },
-                          child: Text('Doanh thu hàng tháng'),
+                          child: Text('Show Monthly Revenue'),
                         ),
                         SizedBox(width: 16),
                         DropdownButton<int>(
@@ -160,7 +146,7 @@ class _DoctorRevenueChartScreenState extends State<DoctorRevenueChartScreen> {
                           titlesData: FlTitlesData(
                             show: true,
                             bottomTitles: AxisTitles(
-                              axisNameWidget: const Text('Tháng'),
+                              axisNameWidget: const Text('Month'),
                               sideTitles: SideTitles(
                                 showTitles: true,
                                 interval: 1,
