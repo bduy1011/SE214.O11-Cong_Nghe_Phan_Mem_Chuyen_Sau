@@ -15,7 +15,7 @@ import 'package:assist_health/models/user/user_profile.dart';
 import 'package:assist_health/models/user/user_height.dart';
 import 'package:assist_health/models/user/user_temperature.dart';
 import 'package:assist_health/models/user/user_weight.dart';
-import 'package:assist_health/ui/other_screens/login.dart';
+import 'package:assist_health/screens/other_screens/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

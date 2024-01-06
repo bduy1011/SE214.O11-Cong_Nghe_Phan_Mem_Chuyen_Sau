@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:assist_health/models/other/appointment_schedule.dart';
 import 'package:assist_health/others/theme.dart';
-import 'package:assist_health/ui/doctor_screens/examination_results.dart';
-import 'package:assist_health/ui/user_screens/schedule_feedback.dart';
+import 'package:assist_health/screens/doctor_screens/examination_results.dart';
+import 'package:assist_health/screens/user_screens/schedule_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
@@ -303,9 +303,9 @@ class _CallPageState extends State<CallPage> {
                     if (widget.isUser) {
                       appointmentSchedule!.isExamined = true;
                       appointmentSchedule!.updateAppointmentIsExaminated();
-                      if (appointmentSchedule!.status == 'Gọi ngay') {
-                        appointmentSchedule!.updateAppointmentStatus('Đã khám');
-                      }
+                      //if (appointmentSchedule!.status == 'Gọi ngay') {
+                      appointmentSchedule!.updateAppointmentStatus('Đã khám');
+                      //}
 
                       Navigator.pushReplacement(
                         context,
